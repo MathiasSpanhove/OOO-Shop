@@ -1,11 +1,17 @@
 package domain;
 
+import java.time.LocalDate;
+
 import exception.DomainException;
 
 public class Movie extends Product {
 	
 	public Movie(String title, int id) throws DomainException {
 		super(title, id);
+	}
+	
+	public Movie(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
+		super(title, id, borrowed, lastBorrowed);
 	}
 
 	@Override
@@ -17,11 +23,10 @@ public class Movie extends Product {
 		double price = Products.MOVIE.getPrice();
 		int daysLeft = days - 3;
 		
-		if (daysLeft > 0) {
+		if(daysLeft > 0) {
 			price += (daysLeft * 2);
 		}
 		
 		return price;
 	}
-
 }

@@ -1,5 +1,7 @@
 package domain;
 
+import java.time.LocalDate;
+
 import exception.DomainException;
 
 public class CD extends Product {
@@ -8,6 +10,10 @@ public class CD extends Product {
 		super(title, id);
 	}
 	
+	public CD(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
+		super(title, id, borrowed, lastBorrowed);
+	}
+
 	@Override
 	public double getPrice(int days) throws DomainException {
 		if(days <= 0) {
@@ -18,5 +24,4 @@ public class CD extends Product {
 		
 		return price;
 	}
-
 }

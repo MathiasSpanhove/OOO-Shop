@@ -3,6 +3,7 @@ package database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,17 +60,14 @@ public class ProductDatabase {
 				line = new Scanner(scanner.nextLine());
 				line.useDelimiter(";");
 				
-				int id = Integer.parseInt(line.next());
+				int id = line.nextInt();
 				String title = line.next();
 				String type = line.next();
-				boolean borrowed = Boolean.parseBoolean(line.next());
+				boolean borrowed = line.nextBoolean();
+				LocalDate lastBorrowed = LocalDate.parse(line.next());
 				
 				String value = Products.getProductCharValue(type.charAt(0));
 				Product newProduct = Products.valueOf(value).createProduct(title, id);
-			
-				if(newProduct.isBorrowed() != borrowed) {
-					newProduct.toggleBorrowed();
-				}
 				
 				this.products.put(id, newProduct);
 			}
