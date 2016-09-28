@@ -9,6 +9,8 @@ myRefactored/
 local.properties
 .settings/
 .loadpath
+.project
+.classpath
 .recommenders
 
 # Eclipse Core
