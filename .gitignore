@@ -1,7 +1,6 @@
 .metadata
 bin/
 tmp/
-myRefactored/
 *.tmp
 *.bak
 *.swp
@@ -9,8 +8,6 @@ myRefactored/
 local.properties
 .settings/
 .loadpath
-.project
-.classpath
 .recommenders
 
 # Eclipse Core
