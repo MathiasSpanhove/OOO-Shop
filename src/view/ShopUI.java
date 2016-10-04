@@ -30,7 +30,7 @@ public class ShopUI {
 					break;
 				}
 				choice = Integer.parseInt(choiceString);
-				if (choice > 5 || choice < 0) {
+				if (choice > 7 || choice < 0) {
 					throw new DomainException("Invalid number");
 				}
 			} catch (NumberFormatException e) {
