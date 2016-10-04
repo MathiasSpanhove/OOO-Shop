@@ -135,12 +135,7 @@ public class ShopUI {
 	private void borrowProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			if(shop.isProductBorrowed(id)) {
-				JOptionPane.showMessageDialog(null, "This product is already borrowed.");
-			} else {
-				shop.toggleBorrowed(id);
-				JOptionPane.showMessageDialog(null, "Thank you for borrowing!");
-			}	
+			shop.borrowProduct(id);
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -153,12 +148,10 @@ public class ShopUI {
 	private void returnProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			if(!shop.isProductBorrowed(id)) {
-				JOptionPane.showMessageDialog(null, "This product is not borrowed.");
-			} else {
-				shop.toggleBorrowed(id);
-				JOptionPane.showMessageDialog(null, "Thank you for returning!");
-			}	
+			double fine = shop.returnProduct(id);
+			if(fine > 0.0) {
+				JOptionPane.showMessageDialog(null, "Please pay the fine of €" + fine);
+			}
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();

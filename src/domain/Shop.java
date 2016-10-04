@@ -1,6 +1,8 @@
 package domain;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import database.ProductDatabaseText;
@@ -44,14 +46,37 @@ public class Shop {
 	}
 	
 	public void borrowProduct(int id) throws DomainException {
+		if(isProductBorrowed(id)) {
+			throw new DomainException("This product has already been borrowed.");
+		}
+		
 		Product p = getProduct(id);
 		p.setLastBorrowed(LocalDate.now());
 		p.toggleBorrowed();
 	}
+
 	
-	public void toggleBorrowed(int id) throws DomainException {
-		Product p = getProduct(id);
+	public double returnProduct(int id) throws DomainException {		
+		if(!isProductBorrowed(id)) {
+			throw new DomainException("This product hasn't been borrowed.");
+		}
+		
+		Product p = getProduct(id);		
 		p.toggleBorrowed();
+		return calculateFine(p.getLastBorrowed());
+	}
+	
+	public double calculateFine(LocalDate lastBorrowed) {
+		double fine = 0.0;
+		double amountPerDay = 3.0;
+		
+		long days = Period.between(lastBorrowed, LocalDate.now()).getDays();
+		
+		if(days >= 5) {
+			fine = (days - 4) * amountPerDay;
+		}
+		
+		return fine;
 	}
 	
 	public String toString() {

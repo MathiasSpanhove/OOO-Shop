@@ -30,6 +30,7 @@ public class ProductDatabaseText implements IProductDatabase {
 		if(!products.containsKey(id)) {
 			throw new DomainException("There is no product with the given ID");
 		}
+		
 		return products.get(id);
 	}
 	
@@ -43,6 +44,8 @@ public class ProductDatabaseText implements IProductDatabase {
 		if(products.containsKey(p.getId())) {
 			throw new DomainException("There already is a product with the given ID");
 		}
+		
+		products.put(p.getId(), p);
 	}
 
 	@Override
@@ -77,7 +80,8 @@ public class ProductDatabaseText implements IProductDatabase {
 				String title = line.next();
 				String type = line.next();
 				boolean borrowed = line.nextBoolean();
-				LocalDate lastBorrowed = LocalDate.parse(line.next());
+				String lastBorrowedString = line.next();
+				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
 				
 				String value = Products.getProductCharValue(type.charAt(0));
 				Product newProduct = Products.valueOf(value).createProduct(title, id, borrowed, lastBorrowed);
