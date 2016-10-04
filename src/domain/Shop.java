@@ -1,16 +1,17 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import database.ProductDatabase;
+import database.ProductDatabaseText;
 import exception.DomainException;
 
 public class Shop {
 	
-	private ProductDatabase db;
+	private ProductDatabaseText db;
 	
 	public Shop() {
-		this.db = new ProductDatabase();
+		this.db = new ProductDatabaseText();
 	}
 	
 	public Product getProduct(int id) throws DomainException {
@@ -22,7 +23,14 @@ public class Shop {
 	}
 	
 	public void addProduct(int id, String title, Character type) throws DomainException {
-		db.addProduct(id, title, type);
+		String value = Products.getProductCharValue(type);
+		
+		if (value != null) {
+			Product newProduct = Products.valueOf(value).createProduct(title, id);
+			db.addProduct(newProduct);
+		} else {
+			throw new DomainException("Invalid product type.");
+		}
 	}
 	
 	public double getPrice(int id, int days) throws DomainException {
@@ -33,6 +41,12 @@ public class Shop {
 	public boolean isProductBorrowed(int id) throws DomainException {
 		Product p = getProduct(id);
 		return p.isBorrowed();
+	}
+	
+	public void borrowProduct(int id) throws DomainException {
+		Product p = getProduct(id);
+		p.setLastBorrowed(LocalDate.now());
+		p.toggleBorrowed();
 	}
 	
 	public void toggleBorrowed(int id) throws DomainException {
@@ -55,7 +69,7 @@ public class Shop {
 	}
 	
 	public void close() {
-		db.write(db.getAllProducts());
+		db.close();
 	}
 
 }

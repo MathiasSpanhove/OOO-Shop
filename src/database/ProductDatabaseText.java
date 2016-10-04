@@ -14,17 +14,18 @@ import domain.Product;
 import domain.Products;
 import exception.DomainException;
 
-public class ProductDatabase {
+public class ProductDatabaseText implements IProductDatabase {
 
 	private Map<Integer, Product> products;
 	private File file;
 	
-	public ProductDatabase() {
+	public ProductDatabaseText() {
 		file = new File("Database.txt");
 		this.products = new HashMap<Integer, Product>();
-		read();
+		open();
 	}
 	
+	@Override
 	public Product getProduct(int id) throws DomainException {
 		if(!products.containsKey(id)) {
 			throw new DomainException("There is no product with the given ID");
@@ -32,26 +33,38 @@ public class ProductDatabase {
 		return products.get(id);
 	}
 	
+	@Override
 	public List<Product> getAllProducts() {
 		return new ArrayList<Product>(products.values());
 	}
 	
-	public void addProduct(int id, String title, Character type) throws DomainException {
-		if(products.containsKey(id)) {
+	@Override
+	public void addProduct(Product p) throws DomainException {
+		if(products.containsKey(p.getId())) {
 			throw new DomainException("There already is a product with the given ID");
 		}
-		
-		String value = Products.getProductCharValue(type);
-		
-		if (value != null) {
-			Product newProduct = Products.valueOf(value).createProduct(title, id);
-			this.products.put(id, newProduct);
-		} else {
-			throw new DomainException("Invalid product type.");
-		}
 	}
-	
-	public void read() {
+
+	@Override
+	public void updateProduct(Product p) throws DomainException {
+		if(!products.containsKey(p.getId())) {
+			throw new DomainException("There is no product with the given ID");
+		}
+		
+		products.put(p.getId(), p);
+	}
+
+	@Override
+	public void deleteProduct(int id) throws DomainException {
+		if(!products.containsKey(id)) {
+			throw new DomainException("There is no product with the given ID");
+		}
+		
+		products.remove(id);
+	}
+
+	@Override
+	public void open() {
 		try {
 			Scanner scanner = new Scanner(file);
 			Scanner line = null;
@@ -67,7 +80,7 @@ public class ProductDatabase {
 				LocalDate lastBorrowed = LocalDate.parse(line.next());
 				
 				String value = Products.getProductCharValue(type.charAt(0));
-				Product newProduct = Products.valueOf(value).createProduct(title, id);
+				Product newProduct = Products.valueOf(value).createProduct(title, id, borrowed, lastBorrowed);
 				
 				this.products.put(id, newProduct);
 			}
@@ -83,15 +96,16 @@ public class ProductDatabase {
 			e.printStackTrace();
 		}
 	}
-	
-	public void write(List<Product> products) {
+
+	@Override
+	public void close() {
 		try {
 			PrintWriter emptyFile = new PrintWriter (file);
 			emptyFile.close();
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			for(Product p : products) {
+			for(Product p : products.values()) {
 				String line = p.toCSV();
 				writer.println(line);
 			}
