@@ -1,16 +1,16 @@
 package domain;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+import database.IProductDatabase;
 import database.ProductDatabaseText;
 import exception.DomainException;
 
 public class Shop {
 	
-	private ProductDatabaseText db;
+	private IProductDatabase db;
 	
 	public Shop() {
 		this.db = new ProductDatabaseText();
