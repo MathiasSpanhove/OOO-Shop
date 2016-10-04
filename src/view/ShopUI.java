@@ -26,9 +26,18 @@ public class ShopUI {
 		while (choice != 0) {
 			try {
 				String choiceString = JOptionPane.showInputDialog(menu);
+				if (choiceString == null) {
+					break;
+				}
 				choice = Integer.parseInt(choiceString);
+				if (choice > 5 || choice < 0) {
+					throw new DomainException("Invalid number");
+				}
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Please enter a number");
+				e.printStackTrace();
+			} catch (DomainException e) {
+				JOptionPane.showMessageDialog(null, "Please enter a valid number");
 				e.printStackTrace();
 			}
 			
