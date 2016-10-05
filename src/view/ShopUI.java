@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.JOptionPane;
 
+import database.DatabaseException;
 import domain.Shop;
 import exception.DomainException;
 
@@ -78,6 +79,9 @@ public class ShopUI {
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
@@ -88,7 +92,7 @@ public class ShopUI {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			JOptionPane.showMessageDialog(null, shop.getProduct(id).getTitle());
-		} catch (DomainException e) {
+		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
@@ -103,6 +107,9 @@ public class ShopUI {
 			int days = Integer.parseInt(JOptionPane.showInputDialog("Enter number of days:"));
 			JOptionPane.showMessageDialog(null, shop.getPrice(id, days));
 		} catch (DomainException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
@@ -123,7 +130,7 @@ public class ShopUI {
 			} else {
 				JOptionPane.showMessageDialog(null, "This product is not borrowed.");
 			}	
-		} catch (DomainException e) {
+		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
@@ -137,6 +144,9 @@ public class ShopUI {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			shop.borrowProduct(id);
 		} catch (DomainException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
@@ -153,6 +163,9 @@ public class ShopUI {
 				JOptionPane.showMessageDialog(null, "Please pay the fine of €" + fine);
 			}
 		} catch (DomainException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (NumberFormatException e) {

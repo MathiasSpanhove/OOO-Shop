@@ -12,7 +12,6 @@ import java.util.Scanner;
 
 import domain.Product;
 import domain.Products;
-import exception.DomainException;
 
 public class ProductDatabaseText implements IProductDatabase {
 
@@ -26,9 +25,9 @@ public class ProductDatabaseText implements IProductDatabase {
 	}
 	
 	@Override
-	public Product getProduct(int id) throws DomainException {
+	public Product getProduct(int id) throws DatabaseException {
 		if(!products.containsKey(id)) {
-			throw new DomainException("There is no product with the given ID");
+			throw new DatabaseException("There is no product with the given ID");
 		}
 		
 		return products.get(id);
@@ -40,27 +39,27 @@ public class ProductDatabaseText implements IProductDatabase {
 	}
 	
 	@Override
-	public void addProduct(Product p) throws DomainException {
+	public void addProduct(Product p) throws DatabaseException {
 		if(products.containsKey(p.getId())) {
-			throw new DomainException("There already is a product with the given ID");
+			throw new DatabaseException("There already is a product with the given ID");
 		}
 		
 		products.put(p.getId(), p);
 	}
 
 	@Override
-	public void updateProduct(Product p) throws DomainException {
+	public void updateProduct(Product p) throws DatabaseException {
 		if(!products.containsKey(p.getId())) {
-			throw new DomainException("There is no product with the given ID");
+			throw new DatabaseException("There is no product with the given ID");
 		}
 		
 		products.put(p.getId(), p);
 	}
 
 	@Override
-	public void deleteProduct(int id) throws DomainException {
+	public void deleteProduct(int id) throws DatabaseException {
 		if(!products.containsKey(id)) {
-			throw new DomainException("There is no product with the given ID");
+			throw new DatabaseException("There is no product with the given ID");
 		}
 		
 		products.remove(id);

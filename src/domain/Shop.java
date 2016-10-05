@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+import database.DatabaseException;
 import database.IProductDatabase;
 import database.ProductDatabaseText;
 import exception.DomainException;
@@ -16,7 +17,7 @@ public class Shop {
 		this.db = new ProductDatabaseText();
 	}
 	
-	public Product getProduct(int id) throws DomainException {
+	public Product getProduct(int id) throws DatabaseException {
 		return db.getProduct(id);
 	}
 	
@@ -24,7 +25,7 @@ public class Shop {
 		return db.getAllProducts();
 	}
 	
-	public void addProduct(int id, String title, Character type) throws DomainException {
+	public void addProduct(int id, String title, Character type) throws DatabaseException, DomainException {
 		String value = Products.getProductCharValue(type);
 		
 		if (value != null) {
@@ -35,17 +36,17 @@ public class Shop {
 		}
 	}
 	
-	public double getPrice(int id, int days) throws DomainException {
+	public double getPrice(int id, int days) throws DomainException, DatabaseException {
 		Product p = getProduct(id);
 		return p.getPrice(days);
 	}
 	
-	public boolean isProductBorrowed(int id) throws DomainException {
+	public boolean isProductBorrowed(int id) throws DatabaseException {
 		Product p = getProduct(id);
 		return p.isBorrowed();
 	}
 	
-	public void borrowProduct(int id) throws DomainException {
+	public void borrowProduct(int id) throws DomainException, DatabaseException {
 		if(isProductBorrowed(id)) {
 			throw new DomainException("This product has already been borrowed.");
 		}
@@ -56,7 +57,7 @@ public class Shop {
 	}
 
 	
-	public double returnProduct(int id) throws DomainException {		
+	public double returnProduct(int id) throws DomainException, DatabaseException {		
 		if(!isProductBorrowed(id)) {
 			throw new DomainException("This product hasn't been borrowed.");
 		}
