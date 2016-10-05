@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import domain.Product;
-import domain.Products;
+import domain.product.Product;
+import domain.product.enums.Products;
 
 public class ProductDatabaseText implements IProductDatabase {
 

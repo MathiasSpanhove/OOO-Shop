@@ -2,7 +2,7 @@ package database;
 
 import java.util.List;
 
-import domain.Product;
+import domain.product.Product;
 
 public interface IProductDatabase {
 	

@@ -9,8 +9,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import domain.Product;
-import domain.Products;
+
+import domain.product.Product;
+import domain.product.enums.Products;
 import exception.DomainException;
 
 public class ProductDatabaseSQL implements IProductDatabase {

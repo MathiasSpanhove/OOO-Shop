@@ -1,16 +1,17 @@
-package domain;
+package domain.product;
 
 import java.time.LocalDate;
 
+import domain.product.enums.Products;
 import exception.DomainException;
 
-public class CD extends Product {
-
-	public CD(String title, int id) throws DomainException {
+public class Game extends Product {
+	
+	public Game(String title, int id) throws DomainException {
 		super(title, id);
 	}
-	
-	public CD(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
+
+	public Game(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
 		super(title, id, borrowed, lastBorrowed);
 	}
 
@@ -20,7 +21,7 @@ public class CD extends Product {
 			throw new DomainException("Please enter a valid amount of days");
 		}
 		
-		double price = days * Products.CD.getPrice();
+		double price = days * Products.GAME.getPrice();
 		
 		return price;
 	}

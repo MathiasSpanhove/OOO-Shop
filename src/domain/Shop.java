@@ -7,6 +7,8 @@ import java.util.List;
 import database.DatabaseException;
 import database.IProductDatabase;
 import database.ProductDatabaseText;
+import domain.product.Product;
+import domain.product.enums.Products;
 import exception.DomainException;
 
 public class Shop {

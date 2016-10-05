@@ -1,7 +1,11 @@
-package domain;
+package domain.product.enums;
 
 import java.time.LocalDate;
 
+import domain.product.CD;
+import domain.product.Game;
+import domain.product.Movie;
+import domain.product.Product;
 import exception.DomainException;
 
 public enum Products {

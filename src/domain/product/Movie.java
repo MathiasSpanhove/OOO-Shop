@@ -1,7 +1,8 @@
-package domain;
+package domain.product;
 
 import java.time.LocalDate;
 
+import domain.product.enums.Products;
 import exception.DomainException;
 
 public class Movie extends Product {
