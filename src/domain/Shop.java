@@ -1,16 +1,19 @@
 package domain;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
-import database.ProductDatabase;
+import database.IProductDatabase;
+import database.ProductDatabaseText;
 import exception.DomainException;
 
 public class Shop {
 	
-	private ProductDatabase db;
+	private IProductDatabase db;
 	
 	public Shop() {
-		this.db = new ProductDatabase();
+		this.db = new ProductDatabaseText();
 	}
 	
 	public Product getProduct(int id) throws DomainException {
@@ -22,7 +25,14 @@ public class Shop {
 	}
 	
 	public void addProduct(int id, String title, Character type) throws DomainException {
-		db.addProduct(id, title, type);
+		String value = Products.getProductCharValue(type);
+		
+		if (value != null) {
+			Product newProduct = Products.valueOf(value).createProduct(title, id);
+			db.addProduct(newProduct);
+		} else {
+			throw new DomainException("Invalid product type.");
+		}
 	}
 	
 	public double getPrice(int id, int days) throws DomainException {
@@ -35,9 +45,38 @@ public class Shop {
 		return p.isBorrowed();
 	}
 	
-	public void toggleBorrowed(int id) throws DomainException {
+	public void borrowProduct(int id) throws DomainException {
+		if(isProductBorrowed(id)) {
+			throw new DomainException("This product has already been borrowed.");
+		}
+		
 		Product p = getProduct(id);
+		p.setLastBorrowed(LocalDate.now());
 		p.toggleBorrowed();
+	}
+
+	
+	public double returnProduct(int id) throws DomainException {		
+		if(!isProductBorrowed(id)) {
+			throw new DomainException("This product hasn't been borrowed.");
+		}
+		
+		Product p = getProduct(id);		
+		p.toggleBorrowed();
+		return calculateFine(p.getLastBorrowed());
+	}
+	
+	public double calculateFine(LocalDate lastBorrowed) {
+		double fine = 0.0;
+		double amountPerDay = 3.0;
+		
+		long days = Period.between(lastBorrowed, LocalDate.now()).getDays();
+		
+		if(days >= 5) {
+			fine = (days - 4) * amountPerDay;
+		}
+		
+		return fine;
 	}
 	
 	public String toString() {
@@ -55,7 +94,7 @@ public class Shop {
 	}
 	
 	public void close() {
-		db.write(db.getAllProducts());
+		db.close();
 	}
 
 }

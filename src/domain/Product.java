@@ -79,7 +79,7 @@ public abstract class Product {
 		return lastBorrowed;
 	}
 
-	private void setLastBorrowed(LocalDate lastBorrowed) {
+	protected void setLastBorrowed(LocalDate lastBorrowed) {
 		this.lastBorrowed = lastBorrowed;
 	}
 	
