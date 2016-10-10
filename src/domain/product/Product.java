@@ -1,14 +1,13 @@
 package domain.product;
 
 import java.time.LocalDate;
-
-import database.DatabaseException;
 import domain.product.state.BorrowedState;
 import domain.product.state.DamagedState;
 import domain.product.state.NotBorrowedState;
 import domain.product.state.ProductState;
 import domain.product.state.RemovedState;
 import exception.DomainException;
+import exception.StateException;
 
 public abstract class Product {
 
@@ -71,20 +70,19 @@ public abstract class Product {
 	
 	//STATES
 	
-	public void borrowProduct() {
+	public void borrowProduct() throws StateException {
 		state.borrowProduct();
-		setLastBorrowed(LocalDate.now());
 	}
 
-	public void returnProduct(boolean damaged) {	
+	public void returnProduct(boolean damaged) throws StateException {	
 		state.returnProduct(damaged);
 	}
 	
-	public void repairProduct() {
+	public void repairProduct() throws StateException {
 		state.repairProduct();
 	}
 	
-	public void deleteProduct() {
+	public void deleteProduct() throws StateException {
 		state.deleteProduct();
 	}
 	

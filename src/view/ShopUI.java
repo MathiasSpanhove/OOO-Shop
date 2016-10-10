@@ -6,6 +6,7 @@ import database.DatabaseException;
 import domain.Shop;
 import domain.product.Product;
 import exception.DomainException;
+import exception.StateException;
 
 public class ShopUI {
 	Shop shop;
@@ -148,7 +149,7 @@ public class ShopUI {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			shop.getProduct(id).borrowProduct();
-		} catch (IllegalStateException e) {
+		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
@@ -173,7 +174,7 @@ public class ShopUI {
 			if(fine > 0.0) {
 				JOptionPane.showMessageDialog(null, "Please pay the fine of €" + fine);
 			}
-		} catch (IllegalStateException e) {
+		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
@@ -189,7 +190,7 @@ public class ShopUI {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			shop.getProduct(id).repairProduct();
-		} catch (IllegalStateException e) {
+		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
@@ -205,7 +206,7 @@ public class ShopUI {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			shop.getProduct(id).deleteProduct();
-		} catch (IllegalStateException e) {
+		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {

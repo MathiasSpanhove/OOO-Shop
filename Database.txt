@@ -1,1 +1,1 @@
-1;battlefield;Game;null;available
+1;battlefield;Game;2016-10-02;damaged

@@ -1,6 +1,7 @@
 package domain.product.state;
 
 import domain.product.Product;
+import exception.StateException;
 
 public class DamagedState implements ProductState {
 
@@ -16,13 +17,13 @@ public class DamagedState implements ProductState {
 	}
 
 	@Override
-	public void borrowProduct() throws IllegalStateException {
-		throw new IllegalStateException("You can't borrow this product, because this product is currently damaged");
+	public void borrowProduct() throws StateException {
+		throw new StateException("You can't borrow this product, because this product is currently damaged");
 	}
 
 	@Override
-	public void returnProduct(boolean damaged) throws IllegalStateException {
-		throw new IllegalStateException("You can't return this product, because this product isn't borrowed");
+	public void returnProduct(boolean damaged) throws StateException {
+		throw new StateException("You can't return this product, because this product isn't borrowed");
 	}
 
 	@Override

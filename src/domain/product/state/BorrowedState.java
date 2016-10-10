@@ -1,6 +1,7 @@
 package domain.product.state;
 
 import domain.product.Product;
+import exception.StateException;
 
 public class BorrowedState implements ProductState {
 
@@ -11,13 +12,13 @@ public class BorrowedState implements ProductState {
 	}
 	
 	@Override
-	public void deleteProduct() throws IllegalStateException {
-		throw new IllegalStateException("You can't delete this product, because this product is currently borrowed");
+	public void deleteProduct() throws StateException {
+		throw new StateException("You can't delete this product, because this product is currently borrowed");
 	}
 
 	@Override
-	public void borrowProduct() throws IllegalStateException {
-		throw new IllegalStateException("You can't borrow this product, because this product is currently borrowed");
+	public void borrowProduct() throws StateException {
+		throw new StateException("You can't borrow this product, because this product is currently borrowed");
 	}
 
 	@Override
@@ -30,8 +31,8 @@ public class BorrowedState implements ProductState {
 	}
 
 	@Override
-	public void repairProduct() throws IllegalStateException {
-		throw new IllegalStateException("You can't repair this product, because this product is currently borrowed");
+	public void repairProduct() throws StateException {
+		throw new StateException("You can't repair this product, because this product is currently borrowed");
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package domain.product.state;
 
 import domain.product.Product;
+import exception.StateException;
 
 public class RemovedState implements ProductState {
 
@@ -11,23 +12,23 @@ public class RemovedState implements ProductState {
 	}
 		
 	@Override
-	public void deleteProduct() throws IllegalStateException {
-		throw new IllegalStateException("This product has been deleted");
+	public void deleteProduct() throws StateException {
+		throw new StateException("This product has been deleted");
 	}
 
 	@Override
-	public void borrowProduct() throws IllegalStateException {
-		throw new IllegalStateException("This product has been deleted");
+	public void borrowProduct() throws StateException {
+		throw new StateException("This product has been deleted");
 	}
 
 	@Override
-	public void returnProduct(boolean damaged) throws IllegalStateException {
-		throw new IllegalStateException("This product has been deleted");
+	public void returnProduct(boolean damaged) throws StateException {
+		throw new StateException("This product has been deleted");
 	}
 
 	@Override
-	public void repairProduct() throws IllegalStateException {
-		throw new IllegalStateException("This product has been deleted");
+	public void repairProduct() throws StateException {
+		throw new StateException("This product has been deleted");
 	}
 
 	@Override
