@@ -38,37 +38,6 @@ public class Shop {
 		}
 	}
 	
-	public double getPrice(int id, int days) throws DomainException, DatabaseException {
-		Product p = getProduct(id);
-		return p.getPrice(days);
-	}
-	
-	public boolean isProductBorrowed(int id) throws DatabaseException {
-		Product p = getProduct(id);
-		return p.isBorrowed();
-	}
-	
-	public void borrowProduct(int id) throws DomainException, DatabaseException {
-		if(isProductBorrowed(id)) {
-			throw new DomainException("This product has already been borrowed.");
-		}
-		
-		Product p = getProduct(id);
-		p.setLastBorrowed(LocalDate.now());
-		p.toggleBorrowed();
-	}
-
-	
-	public double returnProduct(int id) throws DomainException, DatabaseException {		
-		if(!isProductBorrowed(id)) {
-			throw new DomainException("This product hasn't been borrowed.");
-		}
-		
-		Product p = getProduct(id);		
-		p.toggleBorrowed();
-		return calculateFine(p.getLastBorrowed());
-	}
-	
 	public double calculateFine(LocalDate lastBorrowed) {
 		double fine = 0.0;
 		double amountPerDay = 3.0;

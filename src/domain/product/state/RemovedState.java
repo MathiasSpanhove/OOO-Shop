@@ -12,26 +12,26 @@ public class RemovedState implements ProductState {
 		
 	@Override
 	public void deleteProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
 
 	@Override
 	public void borrowProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
 
 	@Override
-	public void returnProduct() {
-		// TODO Auto-generated method stub
-
+	public void returnProduct(boolean damaged) {
+		throw new IllegalStateException();
 	}
 
 	@Override
 	public void repairProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
 
+	@Override
+	public String toString() {
+		return "removed";
+	}
 }

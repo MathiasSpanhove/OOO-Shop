@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import database.DatabaseException;
 import domain.Shop;
+import domain.product.Product;
 import exception.DomainException;
 
 public class ShopUI {
@@ -18,9 +19,11 @@ public class ShopUI {
 				+ "\n2. Show product"
 				+ "\n3. Show rental price"
 				+ "\n4. Show all products"
-				+ "\n5. Check if product is borrowed"
+				+ "\n5. Check product state"
 				+ "\n6. Borrow product"
 				+ "\n7. Return product"
+				+ "\n8. Repair product"
+				+ "\n9. Remove product"
 				+ "\n\n0. Quit";
 		int choice = -1;
 		
@@ -56,7 +59,7 @@ public class ShopUI {
 				showAllProducts();
 				break;
 			case 5:
-				showIsProductBorrowed();
+				showProductState();
 				break;
 			case 6:
 				borrowProduct();
@@ -105,7 +108,7 @@ public class ShopUI {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			int days = Integer.parseInt(JOptionPane.showInputDialog("Enter number of days:"));
-			JOptionPane.showMessageDialog(null, shop.getPrice(id, days));
+			JOptionPane.showMessageDialog(null, shop.getProduct(id).getPrice(days));
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -122,14 +125,10 @@ public class ShopUI {
 		JOptionPane.showMessageDialog(null, shop.toString());
 	}
 	
-	private void showIsProductBorrowed() {
+	private void showProductState() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			if(shop.isProductBorrowed(id)) {
-				JOptionPane.showMessageDialog(null, "This product is borrowed.");
-			} else {
-				JOptionPane.showMessageDialog(null, "This product is not borrowed.");
-			}	
+			JOptionPane.showMessageDialog(null, "This product is " + shop.getProduct(id).getCurrentState().toString());	
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -142,7 +141,7 @@ public class ShopUI {
 	private void borrowProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			shop.borrowProduct(id);
+			shop.getProduct(id).borrowProduct();
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -158,7 +157,13 @@ public class ShopUI {
 	private void returnProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			double fine = shop.returnProduct(id);
+			Product p = shop.getProduct(id);
+			
+			int n = JOptionPane.showConfirmDialog(null,"Is the product damaged?", "Return product", JOptionPane.YES_NO_OPTION);
+			boolean damaged = (n == JOptionPane.YES_OPTION);
+			p.returnProduct(damaged);
+			double fine = shop.calculateFine(p.getLastBorrowed());
+			
 			if(fine > 0.0) {
 				JOptionPane.showMessageDialog(null, "Please pay the fine of €" + fine);
 			}

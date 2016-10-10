@@ -11,8 +11,8 @@ public class Movie extends Product {
 		super(title, id);
 	}
 	
-	public Movie(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
-		super(title, id, borrowed, lastBorrowed);
+	public Movie(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
+		super(title, id, lastBorrowed, stateString);
 	}
 
 	@Override

@@ -42,12 +42,12 @@ public class ProductDatabaseSQL implements IProductDatabase {
 				int id = Integer.parseInt(result.getString("id"));
 				String title = result.getString("title");
 				String type = result.getString("type");
-				Boolean borrowed = result.getBoolean("borrowed");
 				String lastBorrowedString = result.getString("lastBorrowed");
 				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
+				String stateString = result.getString("stateString");
 				
 				String value = Products.getProductCharValue(type.charAt(0));
-				Product newProduct = Products.valueOf(value).createProduct(title, id, borrowed, lastBorrowed);
+				Product newProduct = Products.valueOf(value).createProduct(title, id, lastBorrowed, stateString);
 				
 				products.add(newProduct);
 			}
@@ -84,16 +84,16 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	@Override
 	public void updateProduct(Product p) throws DatabaseException {
 		//TODO: volledige update
-		String sql = "UPDATE r0448327.product SET borrowed ='" + "" + borrowed + "' WHERE id= '" + id+"'";
-		
-		try{
-			statement = connection.prepareStatement(sql);
-			statement.execute();
-		}catch(Exception e){
-			throw new DatabaseException(e.getMessage());
-		}finally{
-			close();
-		}
+//		String sql = "UPDATE r0448327.product SET borrowed ='" + "" + borrowed + "' WHERE id= '" + id+"'";
+//		
+//		try{
+//			statement = connection.prepareStatement(sql);
+//			statement.execute();
+//		}catch(Exception e){
+//			throw new DatabaseException(e.getMessage());
+//		}finally{
+//			close();
+//		}
 	}
 
 	@Override

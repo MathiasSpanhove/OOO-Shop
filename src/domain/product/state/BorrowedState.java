@@ -12,26 +12,30 @@ public class BorrowedState implements ProductState {
 	
 	@Override
 	public void deleteProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
 
 	@Override
 	public void borrowProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
 
 	@Override
-	public void returnProduct() {
-		// TODO Auto-generated method stub
-
+	public void returnProduct(boolean damaged) {
+		if (! damaged) {
+			product.setCurrentState(product.getNotBorrowedState());
+		} else {
+			product.setCurrentState(product.getDamagedState());
+		}
 	}
 
 	@Override
 	public void repairProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
-
+	
+	@Override
+	public String toString() {
+		return "borrowed";
+	}
 }

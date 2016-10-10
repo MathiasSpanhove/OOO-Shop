@@ -2,6 +2,7 @@ package domain.product;
 
 import java.time.LocalDate;
 
+import database.DatabaseException;
 import domain.product.state.BorrowedState;
 import domain.product.state.DamagedState;
 import domain.product.state.NotBorrowedState;
@@ -13,14 +14,12 @@ public abstract class Product {
 
 	private String title;
 	private int id;
-	private boolean borrowed;
 	private LocalDate lastBorrowed;
 	private ProductState state, borrowedState, notBorrowedState, removedState, damagedState;
 	
 	public Product(String title, int id) throws DomainException {
 		setId(id);
 		setTitle(title);
-		setBorrowed(false);
 		
 		borrowedState = new BorrowedState(this);
 		notBorrowedState = new NotBorrowedState(this);
@@ -30,10 +29,9 @@ public abstract class Product {
 		state = notBorrowedState;
 	}
 	
-	public Product(String title, int id, boolean borrowed, LocalDate lastBorrowed, String stateString) throws DomainException {
+	public Product(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
 		setId(id);
 		setTitle(title);
-		setBorrowed(borrowed);
 		setLastBorrowed(lastBorrowed);
 		
 		borrowedState = new BorrowedState(this);
@@ -42,27 +40,22 @@ public abstract class Product {
 		damagedState = new DamagedState(this);
 		
 		switch(stateString) {
-			case "borrowedState":
+			case "borrowed":
 				state = borrowedState;
 				break;
-			case "notBorrowedState":
+			case "available":
 				state = notBorrowedState;
 				break;
-			case "removedState":
+			case "removed":
 				state = removedState;
 				break;
-			case "damagedState":
+			case "damaged":
 				state = damagedState;
 				break;
 		}
 	}
 	
 	public abstract double getPrice(int days) throws DomainException;
-	
-	
-	public void toggleBorrowed() {
-		this.borrowed = !this.borrowed;
-	}
 
 	public String toString() {
 		return id + " - " + title + " (" + this.getClass().getSimpleName() + ")"; 
@@ -72,26 +65,27 @@ public abstract class Product {
 		return id + ";"
 				+ title + ";"
 				+ this.getClass().getSimpleName() + ";"
-				+ borrowed + ";"
-				+ lastBorrowed;
+				+ lastBorrowed + ";"
+				+ state.toString();
 	}
 	
 	//STATES
 	
-	public void deleteProduct() {
-		state.deleteProduct();
-	}
-	
-	public void borrowProduct() {
+	public void borrowProduct() throws DomainException, DatabaseException {
 		state.borrowProduct();
+		setLastBorrowed(LocalDate.now());
 	}
-	
-	public void returnProduct() {
-		state.returnProduct();
+
+	public void returnProduct(boolean damaged) throws DomainException, DatabaseException {	
+		state.returnProduct(damaged);
 	}
 	
 	public void repairProduct() {
 		state.repairProduct();
+	}
+	
+	public void deleteProduct() {
+		state.deleteProduct();
 	}
 	
 	//GETTERS & SETTERS
@@ -119,26 +113,22 @@ public abstract class Product {
 	}
 	
 	public boolean isBorrowed() {
-		return borrowed;
-	}
-
-	private void setBorrowed(boolean borrowed) {
-		this.borrowed = borrowed;
+		return getCurrentState() == borrowedState;
 	}
 
 	public LocalDate getLastBorrowed() {
 		return lastBorrowed;
 	}
 
-	protected void setLastBorrowed(LocalDate lastBorrowed) {
+	public void setLastBorrowed(LocalDate lastBorrowed) {
 		this.lastBorrowed = lastBorrowed;
 	}
 
-	public ProductState getState() {
+	public ProductState getCurrentState() {
 		return state;
 	}
 
-	public void setState(ProductState state) {
+	public void setCurrentState(ProductState state) {
 		this.state = state;
 	}
 

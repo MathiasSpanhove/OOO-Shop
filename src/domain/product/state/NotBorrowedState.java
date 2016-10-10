@@ -12,25 +12,26 @@ public class NotBorrowedState implements ProductState {
 	
 	@Override
 	public void deleteProduct() {
-		product.setState(product.getRemovedState());
+		product.setCurrentState(product.getRemovedState());
 	}
 
 	@Override
 	public void borrowProduct() {
-		// TODO Auto-generated method stub
-
+		product.setCurrentState(product.getBorrowedState());
 	}
 
 	@Override
-	public void returnProduct() {
-		// TODO Auto-generated method stub
-
+	public void returnProduct(boolean damaged) {
+		throw new IllegalStateException();
 	}
 
 	@Override
 	public void repairProduct() {
-		// TODO Auto-generated method stub
-
+		throw new IllegalStateException();
 	}
-
+	
+	@Override
+	public String toString() {
+		return "available";
+	}
 }

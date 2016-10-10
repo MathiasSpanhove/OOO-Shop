@@ -4,7 +4,9 @@ public interface ProductState {
 
 	public void deleteProduct();
 	public void borrowProduct();
-	public void returnProduct();
+	public void returnProduct(boolean damaged);
 	public void repairProduct();
+	
+	public abstract String toString();
 	
 }

@@ -11,8 +11,8 @@ public class CD extends Product {
 		super(title, id);
 	}
 	
-	public CD(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
-		super(title, id, borrowed, lastBorrowed);
+	public CD(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
+		super(title, id, lastBorrowed, stateString);
 	}
 
 	@Override

@@ -11,8 +11,8 @@ public class Game extends Product {
 		super(title, id);
 	}
 
-	public Game(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException {
-		super(title, id, borrowed, lastBorrowed);
+	public Game(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
+		super(title, id, lastBorrowed, stateString);
 	}
 
 	@Override

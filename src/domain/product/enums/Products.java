@@ -20,9 +20,9 @@ public enum Products {
 		}
 
 		@Override
-		public Product createProduct(String title, int id, boolean borrowed, LocalDate lastBorrowed)
+		public Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString)
 				throws DomainException {
-			return new CD(title, id, borrowed, lastBorrowed);
+			return new CD(title, id, lastBorrowed, stateString);
 		}
 	
 	},
@@ -37,9 +37,9 @@ public enum Products {
 		}
 
 		@Override
-		public Product createProduct(String title, int id, boolean borrowed, LocalDate lastBorrowed)
+		public Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString)
 				throws DomainException {
-			return new Movie(title, id, borrowed, lastBorrowed);
+			return new Movie(title, id, lastBorrowed, stateString);
 		}
 	},
 	GAME {
@@ -53,15 +53,15 @@ public enum Products {
 		}
 
 		@Override
-		public Product createProduct(String title, int id, boolean borrowed, LocalDate lastBorrowed)
+		public Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString)
 				throws DomainException {
-			return new Game(title, id, borrowed, lastBorrowed);
+			return new Game(title, id, lastBorrowed, stateString);
 		}
 	};
 	
 	public abstract double getPrice();
 	public abstract Product createProduct(String title, int id) throws DomainException;
-	public abstract Product createProduct(String title, int id, boolean borrowed, LocalDate lastBorrowed) throws DomainException;
+	public abstract Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException;
 	
     public static String getProductCharValue(final char character)
     {

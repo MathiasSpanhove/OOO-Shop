@@ -78,12 +78,12 @@ public class ProductDatabaseText implements IProductDatabase {
 				int id = line.nextInt();
 				String title = line.next();
 				String type = line.next();
-				boolean borrowed = line.nextBoolean();
 				String lastBorrowedString = line.next();
 				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
+				String stateString = line.next();
 				
 				String value = Products.getProductCharValue(type.charAt(0));
-				Product newProduct = Products.valueOf(value).createProduct(title, id, borrowed, lastBorrowed);
+				Product newProduct = Products.valueOf(value).createProduct(title, id, lastBorrowed, stateString);
 				
 				this.products.put(id, newProduct);
 			}
