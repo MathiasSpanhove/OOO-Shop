@@ -16,13 +16,13 @@ public class DamagedState implements ProductState {
 	}
 
 	@Override
-	public void borrowProduct() {
-		throw new IllegalStateException();
+	public void borrowProduct() throws IllegalStateException {
+		throw new IllegalStateException("You can't borrow this product, because this product is currently damaged");
 	}
 
 	@Override
-	public void returnProduct(boolean damaged) {
-		throw new IllegalStateException();
+	public void returnProduct(boolean damaged) throws IllegalStateException {
+		throw new IllegalStateException("You can't return this product, because this product isn't borrowed");
 	}
 
 	@Override

@@ -11,23 +11,23 @@ public class RemovedState implements ProductState {
 	}
 		
 	@Override
-	public void deleteProduct() {
-		throw new IllegalStateException();
+	public void deleteProduct() throws IllegalStateException {
+		throw new IllegalStateException("This product has been deleted");
 	}
 
 	@Override
-	public void borrowProduct() {
-		throw new IllegalStateException();
+	public void borrowProduct() throws IllegalStateException {
+		throw new IllegalStateException("This product has been deleted");
 	}
 
 	@Override
-	public void returnProduct(boolean damaged) {
-		throw new IllegalStateException();
+	public void returnProduct(boolean damaged) throws IllegalStateException {
+		throw new IllegalStateException("This product has been deleted");
 	}
 
 	@Override
-	public void repairProduct() {
-		throw new IllegalStateException();
+	public void repairProduct() throws IllegalStateException {
+		throw new IllegalStateException("This product has been deleted");
 	}
 
 	@Override

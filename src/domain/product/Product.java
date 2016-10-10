@@ -71,12 +71,12 @@ public abstract class Product {
 	
 	//STATES
 	
-	public void borrowProduct() throws DomainException, DatabaseException {
+	public void borrowProduct() {
 		state.borrowProduct();
 		setLastBorrowed(LocalDate.now());
 	}
 
-	public void returnProduct(boolean damaged) throws DomainException, DatabaseException {	
+	public void returnProduct(boolean damaged) {	
 		state.returnProduct(damaged);
 	}
 	

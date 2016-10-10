@@ -2,10 +2,10 @@ package domain.product.state;
 
 public interface ProductState {
 
-	public void deleteProduct();
-	public void borrowProduct();
-	public void returnProduct(boolean damaged);
-	public void repairProduct();
+	public void deleteProduct() throws IllegalStateException;
+	public void borrowProduct() throws IllegalStateException;
+	public void returnProduct(boolean damaged) throws IllegalStateException;
+	public void repairProduct() throws IllegalStateException;
 	
 	public abstract String toString();
 	

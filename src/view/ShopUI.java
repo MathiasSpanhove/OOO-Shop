@@ -34,7 +34,7 @@ public class ShopUI {
 					break;
 				}
 				choice = Integer.parseInt(choiceString);
-				if (choice > 7 || choice < 0) {
+				if (choice > 9 || choice < 0) {
 					throw new DomainException("Invalid number");
 				}
 			} catch (NumberFormatException e) {
@@ -66,6 +66,12 @@ public class ShopUI {
 				break;
 			case 7:
 				returnProduct();
+				break;
+			case 8:
+				repairProduct();
+				break;
+			case 9:
+				deleteProduct();
 				break;
 			}
 		}
@@ -142,7 +148,7 @@ public class ShopUI {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
 			shop.getProduct(id).borrowProduct();
-		} catch (DomainException e) {
+		} catch (IllegalStateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
@@ -167,7 +173,7 @@ public class ShopUI {
 			if(fine > 0.0) {
 				JOptionPane.showMessageDialog(null, "Please pay the fine of €" + fine);
 			}
-		} catch (DomainException e) {
+		} catch (IllegalStateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
@@ -179,4 +185,35 @@ public class ShopUI {
 		}
 	}
 
+	private void repairProduct() {
+		try {
+			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			shop.getProduct(id).repairProduct();
+		} catch (IllegalStateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Input not valid");
+			e.printStackTrace();
+		}
+	}
+	
+	private void deleteProduct() {
+		try {
+			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			shop.getProduct(id).deleteProduct();
+		} catch (IllegalStateException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Input not valid");
+			e.printStackTrace();
+		}
+	}
 }

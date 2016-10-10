@@ -11,13 +11,13 @@ public class BorrowedState implements ProductState {
 	}
 	
 	@Override
-	public void deleteProduct() {
-		throw new IllegalStateException();
+	public void deleteProduct() throws IllegalStateException {
+		throw new IllegalStateException("You can't delete this product, because this product is currently borrowed");
 	}
 
 	@Override
-	public void borrowProduct() {
-		throw new IllegalStateException();
+	public void borrowProduct() throws IllegalStateException {
+		throw new IllegalStateException("You can't borrow this product, because this product is currently borrowed");
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class BorrowedState implements ProductState {
 	}
 
 	@Override
-	public void repairProduct() {
-		throw new IllegalStateException();
+	public void repairProduct() throws IllegalStateException {
+		throw new IllegalStateException("You can't repair this product, because this product is currently borrowed");
 	}
 	
 	@Override

@@ -21,13 +21,13 @@ public class NotBorrowedState implements ProductState {
 	}
 
 	@Override
-	public void returnProduct(boolean damaged) {
-		throw new IllegalStateException();
+	public void returnProduct(boolean damaged) throws IllegalStateException {
+		throw new IllegalStateException("You can't return this product, because this product isn't borrowed");
 	}
 
 	@Override
-	public void repairProduct() {
-		throw new IllegalStateException();
+	public void repairProduct() throws IllegalStateException {
+		throw new IllegalStateException("You can't repair this product, because this product isn't damaged");
 	}
 	
 	@Override
