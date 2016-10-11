@@ -9,6 +9,6 @@ public interface ProductState {
 	public void returnProduct(boolean damaged) throws StateException;
 	public void repairProduct() throws StateException;
 	
-	public abstract String toString();
-	
+	@Override
+	public String toString();
 }
