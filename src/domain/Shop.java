@@ -5,6 +5,7 @@ import java.time.Period;
 import java.util.List;
 
 import database.IProductDatabase;
+import database.ProductDatabaseSQL;
 import database.ProductDatabaseText;
 import domain.product.Product;
 import domain.product.enums.Products;
@@ -15,8 +16,8 @@ public class Shop {
 	
 	private IProductDatabase db;
 	
-	public Shop() {
-		this.db = new ProductDatabaseText();
+	public Shop() throws ClassNotFoundException, DatabaseException {
+		this.db = new ProductDatabaseSQL();
 	}
 	
 	public Product getProduct(int id) throws DatabaseException {

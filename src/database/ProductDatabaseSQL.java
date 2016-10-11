@@ -20,7 +20,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	private Connection connection;
 	private PreparedStatement statement;
 	
-	private ProductDatabaseSQL() throws DatabaseException, ClassNotFoundException{
+	public ProductDatabaseSQL() throws DatabaseException, ClassNotFoundException{
 		open();
 	}
 
@@ -106,16 +106,16 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	public void open() {
 		//properties voor verbinding maken
 		Properties properties = new Properties();
-		String url = "url van onze databank";
+		String url = "jdbc:mysql://sql7.freesqldatabase.com/sql7139719";
 		
-		properties.setProperty("user","r0448327");
-		properties.setProperty("password", "iederzeneigenwachtwoord");
+		properties.setProperty("user","sql7139719");
+		properties.setProperty("password", "nT6fJKVEci");
 		properties.setProperty("ssl", "true");
-		properties.setProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
+		//properties.setProperty("sslfactory", "org.mysql.ssl.NonValidatingFactory");
 		
 		//connectie maken met gegeven databank met opgegeven credentials beschreven in properties
 		try{
-	    	Class.forName("org.postgresql.Driver");
+	    	Class.forName("com.mysql.jdbc.Driver");
 	    	this.connection = DriverManager.getConnection(url, properties);
 	    	
 	    }catch (SQLException e){

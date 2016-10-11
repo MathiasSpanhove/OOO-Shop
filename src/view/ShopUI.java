@@ -12,7 +12,15 @@ public class ShopUI {
 	Shop shop;
 	
 	public ShopUI() {
-		shop = new Shop();
+		try {
+			shop = new Shop();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void showMenu() {
