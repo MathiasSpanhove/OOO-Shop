@@ -33,8 +33,9 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	@Override
 	public List<Product> getAllProducts() {
 		List<Product> products = new ArrayList<>();
-		String sql = "SELECT * FROM r0448327.product";
+		
 		try{
+			String sql = "SELECT * FROM sql7139719.Product";
 			statement = connection.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			
@@ -44,16 +45,18 @@ public class ProductDatabaseSQL implements IProductDatabase {
 				String type = result.getString("type");
 				String lastBorrowedString = result.getString("lastBorrowed");
 				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
-				String stateString = result.getString("stateString");
+				String stateString = result.getString("state");
 				
 				String value = Products.getProductCharValue(type.charAt(0));
 				Product newProduct = Products.valueOf(value).createProduct(title, id, lastBorrowed, stateString);
 				
 				products.add(newProduct);
 			}
-		}catch(Exception e){
+			
+			
+		} catch(Exception e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			close();
 		}
 		
@@ -65,13 +68,14 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		if(p == null){
 			throw new DatabaseException("No product to add");
 		}else{
-			String sql = "INSERT INTO r0448327.product(id, title, state, lastBorrowed)" + "VALUES(?,?,?,?)";
+			String sql = "INSERT INTO Product(id, title, type, lastBorrowed, state)" + "VALUES(?,?,?,?,?)";
 			try{
 				statement = connection.prepareStatement(sql);
 				statement.setString(1, "" + p.getId());
 				statement.setString(2, p.getTitle());
-				statement.setString(3, "" + p.isBorrowed());
+				statement.setString(3, p.getClass().getSimpleName());
 				statement.setString(4, "" + p.getLastBorrowed());
+				statement.setString(5, "" + p.getCurrentState());
 				statement.execute();
 			}catch(Exception e){
 				e.printStackTrace();

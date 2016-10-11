@@ -19,6 +19,7 @@ public abstract class Product {
 	public Product(String title, int id) throws DomainException {
 		setId(id);
 		setTitle(title);
+		setLastBorrowed(null);
 		
 		borrowedState = new BorrowedState(this);
 		notBorrowedState = new NotBorrowedState(this);
