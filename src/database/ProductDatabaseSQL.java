@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import domain.product.Product;
 import domain.product.enums.Products;
-import exception.DomainException;
+import exception.DatabaseException;
 
 public class ProductDatabaseSQL implements IProductDatabase {
 	

@@ -2,9 +2,9 @@ package view;
 
 import javax.swing.JOptionPane;
 
-import database.DatabaseException;
 import domain.Shop;
 import domain.product.Product;
+import exception.DatabaseException;
 import exception.DomainException;
 import exception.StateException;
 

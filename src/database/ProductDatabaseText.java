@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import domain.product.Product;
 import domain.product.enums.Products;
+import exception.DatabaseException;
 
 public class ProductDatabaseText implements IProductDatabase {
 

@@ -3,6 +3,7 @@ package database;
 import java.util.List;
 
 import domain.product.Product;
+import exception.DatabaseException;
 
 public interface IProductDatabase {
 	
