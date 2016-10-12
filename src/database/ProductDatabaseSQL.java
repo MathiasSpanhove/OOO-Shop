@@ -63,7 +63,8 @@ public class ProductDatabaseSQL implements IProductDatabase {
 			} else {
 				throw new DatabaseException("There is no product with the given ID");
 			}
-
+			
+			result.close();
 		} catch (Exception e) {
 			throw new DatabaseException(e.getMessage());
 		} finally {
@@ -97,6 +98,8 @@ public class ProductDatabaseSQL implements IProductDatabase {
 
 				products.add(newProduct);
 			}
+			
+			result.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -126,6 +129,8 @@ public class ProductDatabaseSQL implements IProductDatabase {
 					throw new DatabaseException("There is already a product with the given ID");
 				}
 
+				result.close();
+				
 				this.statement = this.connection.prepareStatement(sql);
 				this.statement.setString(1, "" + p.getId());
 				this.statement.setString(2, p.getTitle());
