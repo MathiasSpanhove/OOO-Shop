@@ -1,4 +1,4 @@
-package database;
+package database.product;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,6 +15,7 @@ import domain.product.enums.Products;
 import exception.DatabaseException;
 
 public class ProductDatabaseSQL implements IProductDatabase {
+
 	// basis voor initialiseren databaseconnectie
 	private Connection connection;
 	private PreparedStatement statement;

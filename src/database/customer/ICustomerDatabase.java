@@ -1,0 +1,20 @@
+package database.customer;
+
+import java.util.List;
+import domain.customer.Customer;
+import exception.DatabaseException;
+
+public interface ICustomerDatabase {
+
+	public Customer getCustomer(int id) throws DatabaseException;
+	public List<Customer> getAllCustomers();
+	public void addCustomer(Customer c) throws DatabaseException;
+	public void updateCustomer(Customer c) throws DatabaseException;
+	public void deleteCustomer(int id) throws DatabaseException;
+	
+	public List<Customer> getSubscribers() throws DatabaseException;
+	
+	public void open();
+	public void close();
+	
+}

@@ -1,7 +1,6 @@
-package database;
+package database.product;
 
 import java.util.List;
-
 import domain.product.Product;
 import exception.DatabaseException;
 
@@ -15,4 +14,5 @@ public interface IProductDatabase {
 	
 	public void open();
 	public void close();
+	
 }

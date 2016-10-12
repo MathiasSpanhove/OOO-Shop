@@ -3,29 +3,31 @@ package domain;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-
-import database.IProductDatabase;
-import database.ProductDatabaseSQL;
-import database.ProductDatabaseText;
+import database.customer.ICustomerDatabase;
+import database.product.IProductDatabase;
+import database.product.ProductDatabaseSQL;
+import domain.customer.Customer;
+import domain.customer.Observer;
 import domain.product.Product;
 import domain.product.enums.Products;
 import exception.DatabaseException;
 import exception.DomainException;
 
-public class Shop {
+public class Shop implements Observable {
 	
-	private IProductDatabase db;
+	private IProductDatabase productDb;
+	private ICustomerDatabase customerDb;
 	
 	public Shop() {
-		this.db = new ProductDatabaseSQL();
+		this.productDb = new ProductDatabaseSQL();
 	}
 	
 	public Product getProduct(int id) throws DatabaseException {
-		return db.getProduct(id);
+		return productDb.getProduct(id);
 	}
 	
 	public List<Product> getProducts() {
-		return db.getAllProducts();
+		return productDb.getAllProducts();
 	}
 	
 	public void addProduct(int id, String title, Character type) throws DatabaseException, DomainException {
@@ -33,18 +35,19 @@ public class Shop {
 		
 		if (value != null) {
 			Product newProduct = Products.valueOf(value).createProduct(title, id);
-			db.addProduct(newProduct);
+			productDb.addProduct(newProduct);
+			notifySubscribers(newProduct);
 		} else {
 			throw new DomainException("Invalid product type.");
 		}
 	}
 	
 	public void updateProduct(Product p) throws DatabaseException {
-		db.updateProduct(p);
+		productDb.updateProduct(p);
 	}
 	
 	public void deleteProduct(int id) throws DatabaseException {
-		db.deleteProduct(id);
+		productDb.deleteProduct(id);
 	}
 	
 	public double calculateFine(LocalDate lastBorrowed) {
@@ -61,13 +64,13 @@ public class Shop {
 	}
 	
 	public String toString() {
-		if(db.getAllProducts().isEmpty()) {
+		if(productDb.getAllProducts().isEmpty()) {
 			return "There are no products";
 		}
 		
 		String output = "";
 		
-		for(Product p : db.getAllProducts()) {
+		for(Product p : productDb.getAllProducts()) {
 			output += p.toString() + "\n";
 		}
 		
@@ -75,6 +78,43 @@ public class Shop {
 	}
 	
 	public void close() {
-		db.close();
+		productDb.close();
+	}
+	
+	//Observer
+
+	@Override
+	public void registerSubscriber(Observer o) throws DatabaseException, DomainException {
+		if(o instanceof Customer) {
+			Customer c = (Customer)o;
+			
+			if(c.isSubscribed()) {
+				throw new DomainException("Customer is already subscribed.");
+			}
+			
+			c.setSubscribed(true);
+			customerDb.updateCustomer(c);
+		}
+	}
+
+	@Override
+	public void removeSubscriber(Observer o) throws DatabaseException, DomainException {
+		if(o instanceof Customer) {
+			Customer c = (Customer)o;
+			
+			if(!c.isSubscribed()) {
+				throw new DomainException("Customer is not subscribed.");
+			}
+			
+			c.setSubscribed(false);
+			customerDb.updateCustomer(c);
+		}
+	}
+
+	@Override
+	public void notifySubscribers(Object arg) throws DatabaseException {
+		for(Observer o : customerDb.getSubscribers()) {
+			o.update(arg);
+		}
 	}
 }
