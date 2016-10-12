@@ -120,5 +120,3 @@ public class ProductDatabaseText implements IProductDatabase {
 		}
 	}
 }
-
-error

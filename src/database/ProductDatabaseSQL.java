@@ -201,5 +201,3 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		}
 	}
 }
-
-error
