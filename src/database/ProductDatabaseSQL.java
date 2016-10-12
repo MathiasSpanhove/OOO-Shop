@@ -15,7 +15,6 @@ import domain.product.enums.Products;
 import exception.DatabaseException;
 
 public class ProductDatabaseSQL implements IProductDatabase {
-
 	// basis voor initialiseren databaseconnectie
 	private Connection connection;
 	private PreparedStatement statement;
@@ -202,3 +201,5 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		}
 	}
 }
+
+error

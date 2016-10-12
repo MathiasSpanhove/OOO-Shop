@@ -15,7 +15,6 @@ import domain.product.enums.Products;
 import exception.DatabaseException;
 
 public class ProductDatabaseText implements IProductDatabase {
-
 	private Map<Integer, Product> products;
 	private File file;
 	
@@ -120,5 +119,6 @@ public class ProductDatabaseText implements IProductDatabase {
 			System.out.println(e.getMessage());
 		}
 	}
-	
 }
+
+error

@@ -16,3 +16,5 @@ public interface IProductDatabase {
 	public void open();
 	public void close();
 }
+
+error
