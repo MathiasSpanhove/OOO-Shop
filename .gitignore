@@ -9,6 +9,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+UML/
 
 # Eclipse Core
 .project
@@ -48,4 +49,4 @@ local.properties
 
 # Code Recommenders
 .recommenders/
-/UML/
+
