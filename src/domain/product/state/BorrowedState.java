@@ -4,10 +4,9 @@ import domain.product.Product;
 import exception.StateException;
 
 public class BorrowedState implements ProductState {
-
 	private Product product;
 	
-	public BorrowedState(Product product) {
+	public BorrowedState(Product product) {nklmh
 		this.product = product;
 	}
 	
