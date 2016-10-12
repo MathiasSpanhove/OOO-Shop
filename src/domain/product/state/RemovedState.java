@@ -5,6 +5,7 @@ import exception.StateException;
 
 public class RemovedState implements ProductState {
 
+	@SuppressWarnings("unused")
 	private Product product;
 	
 	public RemovedState(Product product) {

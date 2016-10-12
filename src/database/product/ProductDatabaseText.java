@@ -20,7 +20,7 @@ public class ProductDatabaseText implements IProductDatabase {
 	private File file;
 	
 	public ProductDatabaseText() {
-		file = new File("Database.txt");
+		file = new File("ProductDatabase.txt");
 		this.products = new HashMap<Integer, Product>();
 		open();
 	}
@@ -109,7 +109,7 @@ public class ProductDatabaseText implements IProductDatabase {
 			
 			PrintWriter writer = new PrintWriter(file);
 			
-			for(Product p : products.values()) {
+			for(Product p : getAllProducts()) {
 				String line = p.toCSV();
 				writer.println(line);
 			}

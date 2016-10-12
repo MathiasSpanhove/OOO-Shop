@@ -38,6 +38,14 @@ public class Customer implements Observer {
 		return getId() + " - " + getFirstName() + " " + getLastName() + " - " + getEmail();
 	}
 	
+	public String toCSV() {
+		return getId() + ";"
+				+ getFirstName() + ";"
+				+ getLastName() + ";"
+				+ getEmail() + ";"
+				+ isSubscribed();
+	}
+	
 	//GETTERS + SETTERS
 
 	public Observable getShop() {

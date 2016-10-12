@@ -44,7 +44,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		this.open();
 		
 		Product product = null;
-		String sql = "SELECT * FROM Product " + "WHERE id ='" + id + "'";
+		String sql = "SELECT * FROM product " + "WHERE id ='" + id + "'";
 
 		try {
 			this.statement = this.connection.prepareStatement(sql);
@@ -79,7 +79,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		this.open();
 		
 		List<Product> products = new ArrayList<>();
-		String sql = "SELECT * FROM Product";
+		String sql = "SELECT * FROM product";
 
 		try {
 			this.statement = this.connection.prepareStatement(sql);
@@ -117,7 +117,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 			this.open();
 			
 			int id = p.getId();
-			String checkIdAlreadyExists = "SELECT * FROM Product " + "WHERE id ='" + id + "'";
+			String checkIdAlreadyExists = "SELECT * FROM product " + "WHERE id ='" + id + "'";
 			String sql = "INSERT INTO Product(id, title, type, lastBorrowed, state)" + "VALUES(?,?,?,?,?)";
 			
 			try {
@@ -150,7 +150,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	public void updateProduct(Product p) throws DatabaseException {
 		this.open();
 		
-		String sql = "UPDATE Product " + "SET state ='" + p.getCurrentState() + "', lastBorrowed ='"
+		String sql = "UPDATE product " + "SET state ='" + p.getCurrentState() + "', lastBorrowed ='"
 				+ p.getLastBorrowed() + "' " + "WHERE id ='" + p.getId() + "'";
 
 		try {
@@ -167,7 +167,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	public void deleteProduct(int id) throws DatabaseException {
 		this.open();
 		
-		String sql = "DELETE FROM Product " + "WHERE id ='" + id + "'";
+		String sql = "DELETE FROM product " + "WHERE id ='" + id + "'";
 
 		try {
 			this.statement = this.connection.prepareStatement(sql);

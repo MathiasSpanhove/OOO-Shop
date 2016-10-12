@@ -3,6 +3,8 @@ package domain;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+
+import database.customer.CustomerDatabaseSQL;
 import database.customer.ICustomerDatabase;
 import database.product.IProductDatabase;
 import database.product.ProductDatabaseSQL;
@@ -20,6 +22,7 @@ public class Shop implements Observable {
 	
 	public Shop() {
 		this.productDb = new ProductDatabaseSQL();
+		this.customerDb = new CustomerDatabaseSQL(this);
 	}
 	
 	public Product getProduct(int id) throws DatabaseException {
