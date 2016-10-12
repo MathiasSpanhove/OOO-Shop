@@ -16,7 +16,7 @@ public class Shop {
 	
 	private IProductDatabase db;
 	
-	public Shop() throws ClassNotFoundException, DatabaseException {
+	public Shop() {
 		this.db = new ProductDatabaseSQL();
 	}
 	
@@ -37,6 +37,14 @@ public class Shop {
 		} else {
 			throw new DomainException("Invalid product type.");
 		}
+	}
+	
+	public void updateProduct(Product p) throws DatabaseException {
+		db.updateProduct(p);
+	}
+	
+	public void deleteProduct(int id) throws DatabaseException {
+		db.deleteProduct(id);
 	}
 	
 	public double calculateFine(LocalDate lastBorrowed) {
@@ -69,5 +77,4 @@ public class Shop {
 	public void close() {
 		db.close();
 	}
-
 }

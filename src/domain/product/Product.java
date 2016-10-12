@@ -58,7 +58,7 @@ public abstract class Product {
 	public abstract double getPrice(int days) throws DomainException;
 
 	public String toString() {
-		return id + " - " + title + " (" + this.getClass().getSimpleName() + ")"; 
+		return id + " - " + title + " (" + this.getClass().getSimpleName() + ") - " + state.toString(); 
 	}
 	
 	public String toCSV() {

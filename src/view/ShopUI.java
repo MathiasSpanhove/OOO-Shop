@@ -12,15 +12,7 @@ public class ShopUI {
 	Shop shop;
 	
 	public ShopUI() {
-		try {
-			shop = new Shop();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		shop = new Shop();
 	}
 	
 	public void showMenu() {
@@ -156,7 +148,9 @@ public class ShopUI {
 	private void borrowProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			shop.getProduct(id).borrowProduct();
+			Product p = shop.getProduct(id);
+			p.borrowProduct();
+			shop.updateProduct(p);
 		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -177,6 +171,7 @@ public class ShopUI {
 			int n = JOptionPane.showConfirmDialog(null,"Is the product damaged?", "Return product", JOptionPane.YES_NO_OPTION);
 			boolean damaged = (n == JOptionPane.YES_OPTION);
 			p.returnProduct(damaged);
+			shop.updateProduct(p);
 			double fine = shop.calculateFine(p.getLastBorrowed());
 			
 			if(fine > 0.0) {
@@ -197,7 +192,9 @@ public class ShopUI {
 	private void repairProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			shop.getProduct(id).repairProduct();
+			Product p = shop.getProduct(id);
+			p.repairProduct();
+			shop.updateProduct(p);
 		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -213,7 +210,9 @@ public class ShopUI {
 	private void deleteProduct() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			shop.getProduct(id).deleteProduct();
+			Product p = shop.getProduct(id);
+			p.deleteProduct();
+			shop.updateProduct(p);
 		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
