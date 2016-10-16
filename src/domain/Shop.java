@@ -5,9 +5,11 @@ import java.time.Period;
 import java.util.List;
 
 import database.customer.CustomerDatabaseSQL;
+import database.customer.CustomerDatabaseText;
 import database.customer.ICustomerDatabase;
 import database.product.IProductDatabase;
 import database.product.ProductDatabaseSQL;
+import database.product.ProductDatabaseText;
 import domain.customer.Customer;
 import domain.customer.Observer;
 import domain.product.Product;
@@ -15,6 +17,7 @@ import domain.product.enums.Products;
 import exception.DatabaseException;
 import exception.DomainException;
 
+@SuppressWarnings("unused")
 public class Shop implements Observable {
 	
 	private IProductDatabase productDb;
@@ -22,8 +25,15 @@ public class Shop implements Observable {
 	
 	public Shop() {
 		this.productDb = new ProductDatabaseSQL();
-		this.customerDb = new CustomerDatabaseSQL(this);
+		this.customerDb = new CustomerDatabaseText(this);
 	}
+	
+	public void close() {
+		productDb.close();
+		customerDb.close();
+	}
+	
+	//Product
 	
 	public Product getProduct(int id) throws DatabaseException {
 		return productDb.getProduct(id);
@@ -66,7 +76,7 @@ public class Shop implements Observable {
 		return fine;
 	}
 	
-	public String toString() {
+	public String productsToString() {
 		if(productDb.getAllProducts().isEmpty()) {
 			return "There are no products";
 		}
@@ -80,8 +90,46 @@ public class Shop implements Observable {
 		return output;
 	}
 	
-	public void close() {
-		productDb.close();
+	//Customer
+	
+	public Customer getCustomer(int id) throws DatabaseException {
+		return customerDb.getCustomer(id);
+	}
+	
+	public List<Customer> getCustomers() throws DatabaseException {
+		return customerDb.getAllCustomers();
+	}
+	
+	public void addCustomer(String firstName, String lastName, String email, int id, boolean subscribed, Observable shop) 
+			throws DatabaseException, DomainException {
+		Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, shop);
+		customerDb.addCustomer(newCustomer);
+		
+		if(subscribed) {
+			shop.registerSubscriber(getCustomer(id));
+		}
+	}
+	
+	public void updateCustomer(Customer p) throws DatabaseException {
+		customerDb.updateCustomer(p);
+	}
+	
+	public void deleteCustomer(int id) throws DatabaseException {
+		customerDb.deleteCustomer(id);
+	}
+	
+	public String customersToString() throws DatabaseException {
+		if(customerDb.getAllCustomers().isEmpty()) {
+			return "There are no customers";
+		}
+		
+		String output = "";
+		
+		for(Customer c : customerDb.getAllCustomers()) {
+			output += c.toString() + "\n";
+		}
+		
+		return output;
 	}
 	
 	//Observer
@@ -89,7 +137,7 @@ public class Shop implements Observable {
 	@Override
 	public void registerSubscriber(Observer o) throws DatabaseException, DomainException {
 		if(o instanceof Customer) {
-			Customer c = (Customer)o;
+			Customer c = (Customer) o;
 			
 			if(c.isSubscribed()) {
 				throw new DomainException("Customer is already subscribed.");

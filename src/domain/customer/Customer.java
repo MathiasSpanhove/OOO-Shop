@@ -19,10 +19,6 @@ public class Customer implements Observer {
 		setId(id);
 		setSubscribed(subscribed);
 		setShop(shop);
-		
-		if(subscribed) {
-			shop.registerSubscriber(this);
-		}
 	}
 	
 	@Override
