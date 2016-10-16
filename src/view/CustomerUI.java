@@ -22,8 +22,9 @@ public class CustomerUI {
 		String menu = "1. Add customer"
 				+ "\n2. Show customer"
 				+ "\n3. Show all customers"
-				+ "\n4. Subscribe customer"
-				+ "\n5. Unsubscribe customer"
+				+ "\n4. Is customer subscribed?"
+				+ "\n5. Subscribe customer"
+				+ "\n6. Unsubscribe customer"
 				+ "\n\n0. Back";
 		
 		while (choice != 0) {
@@ -52,9 +53,12 @@ public class CustomerUI {
 				showAllCustomers();
 				break;
 			case 4:
-				subscribeCustomer();
+				isCustomerSubscribed();
 				break;
 			case 5:
+				subscribeCustomer();
+				break;
+			case 6:
 				unsubscribeCustomer();
 				break;
 			default:
@@ -103,21 +107,47 @@ public class CustomerUI {
 		try {
 			JOptionPane.showMessageDialog(null, shop.customersToString());
 		} catch (HeadlessException e) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	private void isCustomerSubscribed() {
+		try {
+			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			JOptionPane.showMessageDialog(null, shop.getCustomer(id).isSubscribed() ? "Customer is subscribed" : "Customer isn't subscribed");
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		}
 	}
 	
 	private void subscribeCustomer() {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(null, "not implemented");
+		try {
+			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			shop.registerSubscriber(shop.getCustomer(id));
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DomainException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	private void unsubscribeCustomer() {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(null, "not implemented");
+		try {
+			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			shop.removeSubscriber(shop.getCustomer(id));
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DomainException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }
