@@ -5,12 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import domain.Shop;
 import domain.customer.Customer;
+import domain.product.Product;
+import domain.product.enums.Products;
 import exception.DatabaseException;
 
 public class CustomerDatabaseSQL implements ICustomerDatabase {
@@ -43,8 +46,37 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	
 	@Override
 	public Customer getCustomer(int id) throws DatabaseException {
-		return null;
+		this.open();
+		
+		Customer c = null;
+		String sql = "SELECT * FROM CUSTOMER " + "WHERE id ='" + id + "'";
+
+		try {
+			this.statement = this.connection.prepareStatement(sql);
+			ResultSet result = this.statement.executeQuery();
+
+			if (result.next()) {
+				String firstName = result.getString("firstname");
+				String lastName = result.getString("lastname");
+				String email = result.getString("email");
+				Boolean subscribed = result.getBoolean("subscribed");
+				
+				c = new Customer(firstName, lastName, email, id, subscribed, shop);
+				
+			} else {
+				throw new DatabaseException("There is no product with the given ID");
+			}
+			
+			result.close();
+		} catch (Exception e) {
+			throw new DatabaseException(e.getMessage());
+		} finally {
+			this.close();
+		}
+
+		return c;
 	}
+	
 
 	@Override
 	public List<Customer> getAllCustomers() throws DatabaseException {
@@ -65,12 +97,14 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
 				customers.add(c);
 			}
-			return customers;
+			result.close();
 		}catch(Exception e){
 			throw new DatabaseException(e.getMessage());
 		}finally{
 			this.close();
 		}
+		
+		return customers;
 	}
 
 
