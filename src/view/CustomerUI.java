@@ -93,7 +93,7 @@ public class CustomerUI {
 	private void showCustomer() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getFirstName() + shop.getCustomer(id).getLastName());
+			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getFirstName() + " " + shop.getCustomer(id).getLastName());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();

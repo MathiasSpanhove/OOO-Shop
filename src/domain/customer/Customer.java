@@ -10,15 +10,18 @@ public class Customer implements Observer {
 	private Observable shop;
 	private String firstName, lastName, email;
 	private int id;
-	private boolean subscribed;
+	private boolean subscribed = false;
 	
 	public Customer(String firstName, String lastName, String email, int id, boolean subscribed, Observable shop) throws DatabaseException, DomainException {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);
 		setId(id);
-		setSubscribed(subscribed);
 		setShop(shop);
+		
+		if(subscribed) {
+			this.shop.registerSubscriber(this);
+		}
 	}
 	
 	@Override

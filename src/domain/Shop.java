@@ -104,10 +104,6 @@ public class Shop implements Observable {
 			throws DatabaseException, DomainException {
 		Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, shop);
 		customerDb.addCustomer(newCustomer);
-		
-		if(subscribed) {
-			shop.registerSubscriber(getCustomer(id));
-		}
 	}
 	
 	public void updateCustomer(Customer p) throws DatabaseException {
