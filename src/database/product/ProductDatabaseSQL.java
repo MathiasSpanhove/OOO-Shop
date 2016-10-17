@@ -118,7 +118,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 			
 			int id = p.getId();
 			String checkIdAlreadyExists = "SELECT * FROM product " + "WHERE id ='" + id + "'";
-			String sql = "INSERT INTO Product(id, title, type, lastBorrowed, state)" + "VALUES(?,?,?,?,?)";
+			String sql = "INSERT INTO product(id, title, type, lastBorrowed, state)" + "VALUES(?,?,?,?,?)";
 			
 			try {
 				this.statement = connection.prepareStatement(checkIdAlreadyExists);

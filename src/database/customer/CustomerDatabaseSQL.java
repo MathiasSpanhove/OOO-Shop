@@ -21,7 +21,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	private Properties properties;
 	private static final String URL = "jdbc:mysql://sql7.freesqldatabase.com/sql7139719";
 	private Shop shop;
-	
+
 	public CustomerDatabaseSQL(Shop shop) {
 		// properties voor verbinding maken
 		this.properties = new Properties();
@@ -37,16 +37,16 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.shop = shop;
 	}
-	
+
 	@Override
 	public Customer getCustomer(int id) throws DatabaseException {
 		this.open();
-		
+
 		Customer c = null;
-		String sql = "SELECT * FROM CUSTOMER " + "WHERE id ='" + id + "'";
+		String sql = "SELECT * FROM customer " + "WHERE id ='" + id + "'";
 
 		try {
 			this.statement = this.connection.prepareStatement(sql);
@@ -57,13 +57,12 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String lastName = result.getString("lastname");
 				String email = result.getString("email");
 				Boolean subscribed = result.getBoolean("subscribed");
-				
+
 				c = new Customer(firstName, lastName, email, id, subscribed, shop);
-				
 			} else {
-				throw new DatabaseException("There is no product with the given ID");
+				throw new DatabaseException("There is no customer with the given ID");
 			}
-			
+
 			result.close();
 		} catch (Exception e) {
 			throw new DatabaseException(e.getMessage());
@@ -73,38 +72,37 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 
 		return c;
 	}
-	
 
 	@Override
 	public List<Customer> getAllCustomers() throws DatabaseException {
+		this.open();
+
 		List<Customer> customers = new ArrayList<>();
 		String sql = "SELECT * FROM customer";
-		
-		try{
+
+		try {
 			statement = connection.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
-			
-			while(result.next()){
+
+			while (result.next()) {
 				String firstName = result.getString("firstname");
 				String lastName = result.getString("lastname");
 				String email = result.getString("email");
 				int id = Integer.parseInt(result.getString("id"));
 				Boolean subscribed = result.getBoolean("subscribed");
-				
+
 				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
 				customers.add(c);
 			}
 			result.close();
-		}catch(Exception e){
+		} catch (Exception e) {
 			throw new DatabaseException(e.getMessage());
-		}finally{
+		} finally {
 			this.close();
 		}
-		
+
 		return customers;
 	}
-
-
 
 	@Override
 	public void addCustomer(Customer c) throws DatabaseException {
@@ -112,11 +110,11 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 			throw new DatabaseException("No customer to add");
 		} else {
 			this.open();
-			
+
 			int id = c.getId();
 			String checkIdAlreadyExists = "SELECT * FROM customer " + "WHERE id ='" + id + "'";
-			String sql = "INSERT INTO Customer(id, firstName, lastName, email, subscribed)" + "VALUES(?,?,?,?,?)";
-			
+			String sql = "INSERT INTO customer(id, firstName, lastName, email, subscribed)" + "VALUES(?,?,?,?,?)";
+
 			try {
 				this.statement = connection.prepareStatement(checkIdAlreadyExists);
 				ResultSet result = this.statement.executeQuery(checkIdAlreadyExists);
@@ -127,13 +125,13 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				}
 
 				result.close();
-				
+
 				this.statement = this.connection.prepareStatement(sql);
-				this.statement.setString(1,""+ c.getId());
+				this.statement.setString(1, "" + c.getId());
 				this.statement.setString(2, c.getFirstName());
 				this.statement.setString(3, c.getLastName());
 				this.statement.setString(4, c.getEmail());
-				this.statement.setString(5, ""+c.isSubscribed());
+				this.statement.setString(5, "" + (c.isSubscribed() ? 1 : 0));
 				this.statement.execute();
 			} catch (Exception e) {
 				throw new DatabaseException(e.getMessage());
@@ -145,10 +143,9 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 
 	@Override
 	public void updateCustomer(Customer c) throws DatabaseException {
-	this.open();
-		
-	 int bool = (c.isSubscribed()) ? 1 : 0;
-	 String sql = "UPDATE customer " + "SET subscribed ='" + bool + "WHERE id ='" + c.getId() + "'";
+		this.open();
+
+		String sql = "UPDATE customer " + "SET subscribed ='" + (c.isSubscribed() ? 1 : 0) + "' " + " WHERE id ='" + c.getId() + "'";
 
 		try {
 			this.statement = connection.prepareStatement(sql);
@@ -158,13 +155,13 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 		} finally {
 			this.close();
 		}
-		
+
 	}
 
 	@Override
 	public void deleteCustomer(int id) throws DatabaseException {
 		this.open();
-		
+
 		String sq1 = "DELETE FROM customer " + "WHERE id = '" + id + "'";
 		try {
 			this.statement = this.connection.prepareStatement(sq1);
@@ -175,38 +172,35 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 			this.close();
 		}
 	}
-	
+
 	@Override
 	public List<Customer> getSubscribers() throws DatabaseException {
 		this.open();
-		
+
 		List<Customer> subscribers = new ArrayList<>();
-		String sq1 = "SELECT * FROM CUSTOMER";
-		
-		try{
+		String sq1 = "SELECT * FROM CUSTOMER " + "WHERE subscribed = 1";
+
+		try {
 			this.statement = this.connection.prepareStatement(sq1);
 			ResultSet result = this.statement.executeQuery();
-			
-			while(result.next()){
-				boolean subscribed = result.getString("subscribed").equals("1") ? true : false;
-				if(subscribed == true){
-					String firstName = result.getString("firstname");
-					String lastName = result.getString("lastname");
-					String email = result.getString("email");
-					int id = Integer.parseInt(result.getString("id"));
-					
-					Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
-					subscribers.add(c);
-				}
+
+			while (result.next()) {
+				String firstName = result.getString("firstname");
+				String lastName = result.getString("lastname");
+				String email = result.getString("email");
+				int id = Integer.parseInt(result.getString("id"));
+
+				Customer c = new Customer(firstName, lastName, email, id, true, shop);
+				subscribers.add(c);
 			}
-		} catch ( Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			this.close();
 		}
 		return subscribers;
 	}
-	
+
 	@Override
 	public void open() {
 		try {
@@ -220,10 +214,10 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	public void close() {
 		try {
 			if (statement != null) {
-		    	statement.close();
+				statement.close();
 			}
 			if (connection != null) {
-		    	connection.close();
+				connection.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
