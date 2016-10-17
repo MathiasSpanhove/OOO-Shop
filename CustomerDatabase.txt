@@ -1,1 +1,2 @@
-1;Mathias;Spanhove;spam@mail.com;false
+1;Mathias;Spanhove;spam@mail.com;true
+5;Dylan;Driessen;Dylan@gmail.com;false
