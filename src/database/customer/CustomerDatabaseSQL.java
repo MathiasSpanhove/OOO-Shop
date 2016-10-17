@@ -108,24 +108,38 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 
 	@Override
 	public void addCustomer(Customer c) throws DatabaseException {
-		if(c == null){
-			throw new DatabaseException("Nothing to add");
-		}
-		else{
-		this.open();
-		String sql = "INSERT INTO Customer (firstname, lastname, email)" + " VALUES(?,?,?)";
-		try{
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, c.getFirstName());
-			statement.setString(2, c.getLastName());
-			statement.setString(3, c.getEmail());
-			statement.execute();
-			System.out.println("Great succes");
-		}catch(Exception e){
-			throw new DatabaseException(e.getMessage());
-		}finally{
-			this.close();
-		}
+		if (c == null) {
+			throw new DatabaseException("No customer to add");
+		} else {
+			this.open();
+			
+			int id = c.getId();
+			String checkIdAlreadyExists = "SELECT * FROM customer " + "WHERE id ='" + id + "'";
+			String sql = "INSERT INTO Customer(id, firstName, lastName, email, subscribed)" + "VALUES(?,?,?,?,?)";
+			
+			try {
+				this.statement = connection.prepareStatement(checkIdAlreadyExists);
+				ResultSet result = this.statement.executeQuery(checkIdAlreadyExists);
+
+				// if the ID already exists, we quit
+				if (result.next()) {
+					throw new DatabaseException("There is already a customer with the given ID");
+				}
+
+				result.close();
+				
+				this.statement = this.connection.prepareStatement(sql);
+				this.statement.setString(1,""+ c.getId());
+				this.statement.setString(2, c.getFirstName());
+				this.statement.setString(3, c.getLastName());
+				this.statement.setString(4, c.getEmail());
+				this.statement.setString(5, ""+c.isSubscribed());
+				this.statement.execute();
+			} catch (Exception e) {
+				throw new DatabaseException(e.getMessage());
+			} finally {
+				this.close();
+			}
 		}
 	}
 
