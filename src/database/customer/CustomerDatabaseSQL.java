@@ -134,7 +134,18 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 
 	@Override
 	public void updateCustomer(Customer c) throws DatabaseException {
-		// TODO Auto-generated method stub
+	this.open();
+		
+		String sql = "UPDATE customer " + "SET subscribed ='" + c.isSubscribed() + "WHERE id ='" + c.getId() + "'";
+
+		try {
+			this.statement = connection.prepareStatement(sql);
+			this.statement.execute();
+		} catch (Exception e) {
+			throw new DatabaseException(e.getMessage());
+		} finally {
+			this.close();
+		}
 		
 	}
 
@@ -155,8 +166,33 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	
 	@Override
 	public List<Customer> getSubscribers() throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+		this.open();
+		
+		List<Customer> subscribers = new ArrayList<>();
+		String sq1 = "SELECT * FROM CUSTOMER";
+		
+		try{
+			this.statement = this.connection.prepareStatement(sq1);
+			ResultSet result = this.statement.executeQuery();
+			
+			while(result.next()){
+				Boolean subscribed = result.getBoolean("subscribed");
+				if(subscribed == true){
+					String firstName = result.getString("firstname");
+					String lastName = result.getString("lastname");
+					String email = result.getString("email");
+					int id = Integer.parseInt(result.getString("id"));
+					
+					Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
+					subscribers.add(c);
+				}
+			}
+		} catch ( Exception e){
+			e.printStackTrace();
+		} finally {
+			this.close();
+		}
+		return subscribers;
 	}
 	
 	@Override
