@@ -133,7 +133,8 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	public void updateCustomer(Customer c) throws DatabaseException {
 	this.open();
 		
-		String sql = "UPDATE customer " + "SET subscribed ='" + c.isSubscribed() + "WHERE id ='" + c.getId() + "'";
+	 int bool = (c.isSubscribed()) ? 1 : 0;
+	 String sql = "UPDATE customer " + "SET subscribed ='" + bool + "WHERE id ='" + c.getId() + "'";
 
 		try {
 			this.statement = connection.prepareStatement(sql);
@@ -173,7 +174,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 			ResultSet result = this.statement.executeQuery();
 			
 			while(result.next()){
-				Boolean subscribed = result.getBoolean("subscribed");
+				boolean subscribed = result.getString("subscribed").equals("1") ? true : false;
 				if(subscribed == true){
 					String firstName = result.getString("firstname");
 					String lastName = result.getString("lastname");
