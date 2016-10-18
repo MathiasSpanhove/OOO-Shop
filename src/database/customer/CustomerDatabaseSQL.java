@@ -144,7 +144,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				this.statement.setString(2, c.getFirstName());
 				this.statement.setString(3, c.getLastName());
 				this.statement.setString(4, c.getEmail());
-				this.statement.setBoolean(5, c.isSubscribed());
+				this.statement.setBoolean(5, c.getMailSubscription().isSubscribed());
 				this.statement.execute();
 			} catch (Exception e) {
 				throw new DatabaseException(e.getMessage());
@@ -158,7 +158,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	public void updateCustomer(Customer c) throws DatabaseException {
 		this.open();
 
-		String sql = "UPDATE customer " + "SET subscribed ='" + (c.isSubscribed() ? 1 : 0) + "' " + " WHERE id ='"
+		String sql = "UPDATE customer " + "SET subscribed ='" + (c.getMailSubscription().isSubscribed() ? 1 : 0) + "' " + " WHERE id ='"
 				+ c.getId() + "'";
 
 		try {
@@ -205,7 +205,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				int id = Integer.parseInt(result.getString("id"));
 
 				Customer c = new Customer(firstName, lastName, email, id, true, shop);
-				subscribers.add(c);
+				subscribers.add(c.getMailSubscription());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

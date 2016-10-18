@@ -11,6 +11,7 @@ import database.product.IProductDatabase;
 import database.product.ProductDatabaseSQL;
 import database.product.ProductDatabaseText;
 import domain.customer.Customer;
+import domain.customer.MailSubscription;
 import domain.customer.Observer;
 import domain.product.Product;
 import domain.product.enums.Products;
@@ -141,31 +142,31 @@ public class Shop implements Observable {
 
 	@Override
 	public void registerSubscriber(Observer o) throws DatabaseException, DomainException {
-		if(o instanceof Customer) {
-			Customer c = (Customer) o;
+		if(o instanceof MailSubscription) {
+			MailSubscription m = (MailSubscription) o;
 			
-			if(c.isSubscribed()) {
+			if(m.isSubscribed()) {
 				throw new DomainException("Customer is already subscribed.");
 			}
 			
-			this.observers.add(o);
-			c.setSubscribed(true);
-			customerDb.updateCustomer(c);
+			this.observers.add(m);
+			m.setSubscribed(true);
+			customerDb.updateCustomer(m.getCustomer());
 		}
 	}
 
 	@Override
 	public void removeSubscriber(Observer o) throws DatabaseException, DomainException {
-		if(o instanceof Customer) {
-			Customer c = (Customer)o;
+		if(o instanceof MailSubscription) {
+			MailSubscription m = (MailSubscription) o;
 			
-			if(!c.isSubscribed()) {
+			if(!m.isSubscribed()) {
 				throw new DomainException("Customer is not subscribed.");
 			}
 			
-			this.observers.remove(o);
-			c.setSubscribed(false);
-			customerDb.updateCustomer(c);
+			this.observers.remove(m);
+			m.setSubscribed(false);
+			customerDb.updateCustomer(m.getCustomer());
 		}
 	}
 

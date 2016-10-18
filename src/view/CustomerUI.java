@@ -118,7 +118,7 @@ public class CustomerUI {
 	private void isCustomerSubscribed() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			JOptionPane.showMessageDialog(null, shop.getCustomer(id).isSubscribed() ? "Customer is subscribed" : "Customer isn't subscribed");
+			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getMailSubscription().isSubscribed() ? "Customer is subscribed" : "Customer isn't subscribed");
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -128,7 +128,7 @@ public class CustomerUI {
 	private void subscribeCustomer() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			shop.registerSubscriber(shop.getCustomer(id));
+			shop.registerSubscriber(shop.getCustomer(id).getMailSubscription());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -141,7 +141,7 @@ public class CustomerUI {
 	private void unsubscribeCustomer() {
 		try {
 			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			shop.removeSubscriber(shop.getCustomer(id));
+			shop.removeSubscriber(shop.getCustomer(id).getMailSubscription());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();

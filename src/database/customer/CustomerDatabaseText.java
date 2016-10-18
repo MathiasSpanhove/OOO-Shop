@@ -72,8 +72,8 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 		List<Observer> subscribers = new ArrayList<Observer>();
 		
 		for(Customer c : getAllCustomers()) {
-			if(c.isSubscribed()) {
-				subscribers.add(c);
+			if(c.getMailSubscription().isSubscribed()) {
+				subscribers.add(c.getMailSubscription());
 			}
 		}
 		

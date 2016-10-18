@@ -1,37 +1,22 @@
 package domain.customer;
 
 import domain.Observable;
-import domain.product.Product;
 import exception.DatabaseException;
 import exception.DomainException;
 
-public class Customer implements Observer {
+public class Customer {
 
-	private Observable shop;
 	private String firstName, lastName, email;
 	private int id;
-	private boolean subscribed;
+	private MailSubscription mailSubscription;
 	
 	public Customer(String firstName, String lastName, String email, int id, boolean subscribed, Observable shop) throws DatabaseException, DomainException {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);
 		setId(id);
-		setShop(shop);
 		
-		if(subscribed) {
-			this.shop.registerSubscriber(this);
-		} else {
-			setSubscribed(false);
-		}
-	}
-	
-	@Override
-	public void update(Object arg) {
-		if(arg instanceof Product) {
-			Product p = (Product)arg;
-			System.out.println("Mail - 'New product: " + p.getTitle() + "' - sent to " + getEmail());
-		}
+		this.mailSubscription = new MailSubscription(this, shop, subscribed);
 	}
 	
 	@Override
@@ -44,14 +29,10 @@ public class Customer implements Observer {
 				+ getFirstName() + ";"
 				+ getLastName() + ";"
 				+ getEmail() + ";"
-				+ isSubscribed();
+				+ mailSubscription.isSubscribed();
 	}
 	
 	//GETTERS + SETTERS
-
-	public Observable getShop() {
-		return shop;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -68,13 +49,9 @@ public class Customer implements Observer {
 	public int getId() {
 		return id;
 	}
-	
-	public boolean isSubscribed() {
-		return subscribed;
-	}
 
-	private void setShop(Observable shop) {
-		this.shop = shop;
+	public MailSubscription getMailSubscription() {
+		return mailSubscription;
 	}
 
 	private void setFirstName(String firstName) {
@@ -92,9 +69,9 @@ public class Customer implements Observer {
 	private void setId(int id) {
 		this.id = id;
 	}
-	
-	public void setSubscribed(boolean subscribed) throws DatabaseException, DomainException {
-		this.subscribed = subscribed;
+
+	private void setMailSubscription(MailSubscription mailSubscription) {
+		this.mailSubscription = mailSubscription;
 	}
 
 }
