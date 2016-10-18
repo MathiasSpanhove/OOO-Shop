@@ -29,23 +29,24 @@ public class ShopUI {
 					break;
 				} else {
 					choice = Integer.parseInt(choiceString);
+					
+					switch(choice) {
+					case 0:
+						break;
+					case 1:
+						productUI.showMenu();
+						break;
+					case 2:
+						costumerUI.showMenu();
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+					}
 				}
+				
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Please enter a number");
 				e.printStackTrace();
-			}
-			
-			switch(choice) {
-			case 0:
-				break;
-			case 1:
-				productUI.showMenu();
-				break;
-			case 2:
-				costumerUI.showMenu();
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Please enter a valid number");
 			}
 		}
 		

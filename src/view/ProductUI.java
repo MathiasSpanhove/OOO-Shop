@@ -37,44 +37,44 @@ public class ProductUI {
 					break;
 				} else {
 					choice = Integer.parseInt(choiceString);
+					
+					switch(choice) {
+					case 0:
+						break;
+					case 1:
+						addProduct();
+						break;
+					case 2:
+						showProduct();
+						break;
+					case 3:
+						showPrice();
+						break;
+					case 4:
+						showAllProducts();
+						break;
+					case 5:
+						showProductState();
+						break;
+					case 6:
+						borrowProduct();
+						break;
+					case 7:
+						returnProduct();
+						break;
+					case 8:
+						repairProduct();
+						break;
+					case 9:
+						deleteProduct();
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+					}
 				}
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Please enter a number");
 				e.printStackTrace();
-			}
-			
-			switch(choice) {
-			case 0:
-				break;
-			case 1:
-				addProduct();
-				break;
-			case 2:
-				showProduct();
-				break;
-			case 3:
-				showPrice();
-				break;
-			case 4:
-				showAllProducts();
-				break;
-			case 5:
-				showProductState();
-				break;
-			case 6:
-				borrowProduct();
-				break;
-			case 7:
-				returnProduct();
-				break;
-			case 8:
-				repairProduct();
-				break;
-			case 9:
-				deleteProduct();
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Please enter a valid number");
 			}
 		}
 	}

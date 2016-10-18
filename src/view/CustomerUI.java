@@ -34,35 +34,35 @@ public class CustomerUI {
 					break;
 				} else {
 					choice = Integer.parseInt(choiceString);
+					
+					switch(choice) {
+					case 0:
+						break;
+					case 1:
+						addCustomer();
+						break;
+					case 2:
+						showCustomer();
+						break;
+					case 3:
+						showAllCustomers();
+						break;
+					case 4:
+						isCustomerSubscribed();
+						break;
+					case 5:
+						subscribeCustomer();
+						break;
+					case 6:
+						unsubscribeCustomer();
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+					}
 				}
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(null, "Please enter a number");
 				e.printStackTrace();
-			}
-			
-			switch(choice) {
-			case 0:
-				break;
-			case 1:
-				addCustomer();
-				break;
-			case 2:
-				showCustomer();
-				break;
-			case 3:
-				showAllCustomers();
-				break;
-			case 4:
-				isCustomerSubscribed();
-				break;
-			case 5:
-				subscribeCustomer();
-				break;
-			case 6:
-				unsubscribeCustomer();
-				break;
-			default:
-				JOptionPane.showMessageDialog(null, "Please enter a valid number");
 			}
 		}
 	}
