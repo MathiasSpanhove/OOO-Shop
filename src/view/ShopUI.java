@@ -3,6 +3,8 @@ package view;
 import javax.swing.JOptionPane;
 
 import domain.Shop;
+import exception.DatabaseException;
+import exception.DomainException;
 
 public class ShopUI {
 	Shop shop;
@@ -10,7 +12,15 @@ public class ShopUI {
 	CustomerUI costumerUI;
 	
 	public ShopUI() {
-		shop = new Shop();
+		try {
+			shop = new Shop();
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DomainException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.productUI = new ProductUI(shop, this);
 		this.costumerUI = new CustomerUI(shop, this);
 	}

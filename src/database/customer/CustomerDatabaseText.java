@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import domain.Shop;
 import domain.customer.Customer;
+import domain.customer.Observer;
 import exception.DatabaseException;
 
 public class CustomerDatabaseText implements ICustomerDatabase {
@@ -67,8 +68,8 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 	}
 
 	@Override
-	public List<Customer> getSubscribers() throws DatabaseException {
-		List<Customer> subscribers = new ArrayList<Customer>();
+	public List<Observer> getSubscribers() throws DatabaseException {
+		List<Observer> subscribers = new ArrayList<Observer>();
 		
 		for(Customer c : getAllCustomers()) {
 			if(c.isSubscribed()) {

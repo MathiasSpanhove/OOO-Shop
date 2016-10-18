@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import domain.Shop;
 import domain.customer.Customer;
+import domain.customer.Observer;
 import exception.DatabaseException;
 
 public class CustomerDatabaseSQL implements ICustomerDatabase {
@@ -174,10 +175,10 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	}
 
 	@Override
-	public List<Customer> getSubscribers() throws DatabaseException {
+	public List<Observer> getSubscribers() throws DatabaseException {
 		this.open();
 
-		List<Customer> subscribers = new ArrayList<>();
+		List<Observer> subscribers = new ArrayList<Observer>();
 		String sq1 = "SELECT * FROM CUSTOMER " + "WHERE subscribed = 1";
 
 		try {

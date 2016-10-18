@@ -17,8 +17,13 @@ public class Customer implements Observer {
 		setLastName(lastName);
 		setEmail(email);
 		setId(id);
-		setSubscribed(subscribed);
 		setShop(shop);
+		
+		if(subscribed) {
+			this.shop.registerSubscriber(this);
+		} else {
+			setSubscribed(false);
+		}
 	}
 	
 	@Override
@@ -88,7 +93,7 @@ public class Customer implements Observer {
 		this.id = id;
 	}
 	
-	public void setSubscribed(boolean subscribed) {
+	public void setSubscribed(boolean subscribed) throws DatabaseException, DomainException {
 		this.subscribed = subscribed;
 	}
 

@@ -2,8 +2,8 @@ package domain;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
-
 import database.customer.CustomerDatabaseSQL;
 import database.customer.CustomerDatabaseText;
 import database.customer.ICustomerDatabase;
@@ -14,6 +14,7 @@ import domain.customer.Customer;
 import domain.customer.Observer;
 import domain.product.Product;
 import domain.product.enums.Products;
+import domain.statistics.Statistics;
 import exception.DatabaseException;
 import exception.DomainException;
 
@@ -22,10 +23,14 @@ public class Shop implements Observable {
 	
 	private IProductDatabase productDb;
 	private ICustomerDatabase customerDb;
+	private List<Observer> observers;
+	private Statistics statistics;
 	
-	public Shop() {
+	public Shop() throws DatabaseException, DomainException {
 		this.productDb = new ProductDatabaseSQL();
-		this.customerDb = new CustomerDatabaseText(this);
+		this.customerDb = new CustomerDatabaseSQL(this);
+		this.observers = new ArrayList<Observer>();
+		this.statistics = new Statistics(this);
 	}
 	
 	public void close() {
@@ -139,6 +144,7 @@ public class Shop implements Observable {
 				throw new DomainException("Customer is already subscribed.");
 			}
 			
+			this.observers.add(o);
 			c.setSubscribed(true);
 			customerDb.updateCustomer(c);
 		}
@@ -153,6 +159,7 @@ public class Shop implements Observable {
 				throw new DomainException("Customer is not subscribed.");
 			}
 			
+			this.observers.remove(o);
 			c.setSubscribed(false);
 			customerDb.updateCustomer(c);
 		}
