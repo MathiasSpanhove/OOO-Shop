@@ -42,6 +42,18 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 		this.shop = shop;
 	}
 
+	private void createCustomerTable() throws DatabaseException {
+		String sql = "CREATE TABLE customer " + "(id INTEGER not NULL, " + " firstName VARCHAR(255), "
+				+ " lastName VARCHAR(255), " + " email VARCHAR(255), " + " subscribed BIT, " + " PRIMARY KEY ( id ))";
+
+		try {
+			this.statement = this.connection.prepareStatement(sql);
+			this.statement.executeUpdate(sql);
+		} catch (Exception e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+
 	@Override
 	public Customer getCustomer(int id) throws DatabaseException {
 		this.open();
@@ -57,7 +69,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String firstName = result.getString("firstname");
 				String lastName = result.getString("lastname");
 				String email = result.getString("email");
-				Boolean subscribed = result.getBoolean("subscribed");
+				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
 
 				c = new Customer(firstName, lastName, email, id, subscribed, shop);
 			} else {
@@ -90,7 +102,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String lastName = result.getString("lastname");
 				String email = result.getString("email");
 				int id = Integer.parseInt(result.getString("id"));
-				Boolean subscribed = result.getBoolean("subscribed");
+				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
 
 				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
 				customers.add(c);
@@ -128,11 +140,11 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				result.close();
 
 				this.statement = this.connection.prepareStatement(sql);
-				this.statement.setString(1, "" + c.getId());
+				this.statement.setInt(1, c.getId());
 				this.statement.setString(2, c.getFirstName());
 				this.statement.setString(3, c.getLastName());
 				this.statement.setString(4, c.getEmail());
-				this.statement.setString(5, "" + (c.isSubscribed() ? 1 : 0));
+				this.statement.setBoolean(5, c.isSubscribed());
 				this.statement.execute();
 			} catch (Exception e) {
 				throw new DatabaseException(e.getMessage());
@@ -146,7 +158,8 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	public void updateCustomer(Customer c) throws DatabaseException {
 		this.open();
 
-		String sql = "UPDATE customer " + "SET subscribed ='" + (c.isSubscribed() ? 1 : 0) + "' " + " WHERE id ='" + c.getId() + "'";
+		String sql = "UPDATE customer " + "SET subscribed ='" + (c.isSubscribed() ? 1 : 0) + "' " + " WHERE id ='"
+				+ c.getId() + "'";
 
 		try {
 			this.statement = connection.prepareStatement(sql);
@@ -179,7 +192,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 		this.open();
 
 		List<Observer> subscribers = new ArrayList<Observer>();
-		String sq1 = "SELECT * FROM CUSTOMER " + "WHERE subscribed = 1";
+		String sq1 = "SELECT * FROM customer " + "WHERE subscribed = 1";
 
 		try {
 			this.statement = this.connection.prepareStatement(sq1);
@@ -203,16 +216,24 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	}
 
 	@Override
-	public void open() {
+	public void open() throws DatabaseException {
 		try {
+			// make connection
 			this.connection = DriverManager.getConnection(URL, this.properties);
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+			// does table customer exist?
+			java.sql.DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "customer", null);
+			if (!tables.next()) {
+				createCustomerTable();
+			}
+		} catch (Exception e) {
+			throw new DatabaseException(e.getMessage());
 		}
 	}
 
 	@Override
-	public void close() {
+	public void close() throws DatabaseException {
 		try {
 			if (statement != null) {
 				statement.close();
@@ -221,7 +242,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				connection.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new DatabaseException(e.getMessage());
 		}
 	}
 

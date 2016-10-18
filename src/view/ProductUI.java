@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.HeadlessException;
+
 import javax.swing.JOptionPane;
 
 import domain.Shop;
@@ -128,7 +130,15 @@ public class ProductUI {
 	}
 	
 	private void showAllProducts() {
-		JOptionPane.showMessageDialog(null, shop.productsToString());
+		try {
+			JOptionPane.showMessageDialog(null, shop.productsToString());
+		} catch (HeadlessException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	private void showProductState() {

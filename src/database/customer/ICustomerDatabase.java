@@ -15,7 +15,7 @@ public interface ICustomerDatabase {
 	
 	public List<Observer> getSubscribers() throws DatabaseException;
 	
-	public void open();
-	public void close();
+	public void open() throws DatabaseException;
+	public void close() throws DatabaseException;
 	
 }

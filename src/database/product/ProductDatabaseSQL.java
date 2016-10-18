@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.mysql.jdbc.DatabaseMetaData;
+
 import domain.product.Product;
 import domain.product.enums.Products;
 import exception.DatabaseException;
@@ -39,10 +41,23 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		}
 	}
 
+	private void createProductTable() throws DatabaseException {
+		String sql = "CREATE TABLE product " + "(id INTEGER not NULL, " + " title VARCHAR(255), "
+				+ " type VARCHAR(255), " + " lastBorrowed VARCHAR(255), " + " state VARCHAR(255), "
+				+ " PRIMARY KEY ( id ))";
+
+		try {
+			this.statement = this.connection.prepareStatement(sql);
+			this.statement.executeUpdate(sql);
+		} catch (Exception e) {
+			throw new DatabaseException(e.getMessage());
+		}
+	}
+
 	@Override
 	public Product getProduct(int id) throws DatabaseException {
 		this.open();
-		
+
 		Product product = null;
 		String sql = "SELECT * FROM product " + "WHERE id ='" + id + "'";
 
@@ -63,7 +78,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 			} else {
 				throw new DatabaseException("There is no product with the given ID");
 			}
-			
+
 			result.close();
 		} catch (Exception e) {
 			throw new DatabaseException(e.getMessage());
@@ -75,9 +90,9 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	}
 
 	@Override
-	public List<Product> getAllProducts() {
+	public List<Product> getAllProducts() throws DatabaseException {
 		this.open();
-		
+
 		List<Product> products = new ArrayList<>();
 		String sql = "SELECT * FROM product";
 
@@ -90,7 +105,8 @@ public class ProductDatabaseSQL implements IProductDatabase {
 				String title = result.getString("title");
 				String type = result.getString("type");
 				String lastBorrowedString = result.getString("lastBorrowed");
-				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
+				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null
+						: LocalDate.parse(lastBorrowedString));
 				String stateString = result.getString("state");
 
 				String value = Products.getProductCharValue(type.charAt(0));
@@ -98,10 +114,10 @@ public class ProductDatabaseSQL implements IProductDatabase {
 
 				products.add(newProduct);
 			}
-			
+
 			result.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new DatabaseException(e.getMessage());
 		} finally {
 			this.close();
 		}
@@ -115,11 +131,11 @@ public class ProductDatabaseSQL implements IProductDatabase {
 			throw new DatabaseException("No product to add");
 		} else {
 			this.open();
-			
+
 			int id = p.getId();
 			String checkIdAlreadyExists = "SELECT * FROM product " + "WHERE id ='" + id + "'";
 			String sql = "INSERT INTO product(id, title, type, lastBorrowed, state)" + "VALUES(?,?,?,?,?)";
-			
+
 			try {
 				this.statement = connection.prepareStatement(checkIdAlreadyExists);
 				ResultSet result = this.statement.executeQuery(checkIdAlreadyExists);
@@ -130,7 +146,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 				}
 
 				result.close();
-				
+
 				this.statement = this.connection.prepareStatement(sql);
 				this.statement.setString(1, "" + p.getId());
 				this.statement.setString(2, p.getTitle());
@@ -149,7 +165,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	@Override
 	public void updateProduct(Product p) throws DatabaseException {
 		this.open();
-		
+
 		String sql = "UPDATE product " + "SET state ='" + p.getCurrentState() + "', lastBorrowed ='"
 				+ p.getLastBorrowed() + "' " + "WHERE id ='" + p.getId() + "'";
 
@@ -166,7 +182,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	@Override
 	public void deleteProduct(int id) throws DatabaseException {
 		this.open();
-		
+
 		String sql = "DELETE FROM product " + "WHERE id ='" + id + "'";
 
 		try {
@@ -180,25 +196,33 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	}
 
 	@Override
-	public void open() {
+	public void open() throws DatabaseException {
 		try {
+			// make connection
 			this.connection = DriverManager.getConnection(URL, this.properties);
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+			// does table product exist?
+			java.sql.DatabaseMetaData dbm = connection.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "product", null);
+			if (!tables.next()) {
+				createProductTable();
+			}
+		} catch (Exception e) {
+			throw new DatabaseException(e.getMessage());
 		}
 	}
 
 	@Override
-	public void close() {
+	public void close() throws DatabaseException {
 		try {
 			if (statement != null) {
-		    	statement.close();
+				statement.close();
 			}
 			if (connection != null) {
-		    	connection.close();
+				connection.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new DatabaseException(e.getMessage());
 		}
 	}
 }

@@ -34,8 +34,12 @@ public class Shop implements Observable {
 	}
 	
 	public void close() {
-		productDb.close();
-		customerDb.close();
+		try {
+			productDb.close();
+			customerDb.close();
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//Product
@@ -44,7 +48,7 @@ public class Shop implements Observable {
 		return productDb.getProduct(id);
 	}
 	
-	public List<Product> getProducts() {
+	public List<Product> getProducts() throws DatabaseException {
 		return productDb.getAllProducts();
 	}
 	
@@ -81,7 +85,7 @@ public class Shop implements Observable {
 		return fine;
 	}
 	
-	public String productsToString() {
+	public String productsToString() throws DatabaseException {
 		if(productDb.getAllProducts().isEmpty()) {
 			return "There are no products";
 		}
