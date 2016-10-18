@@ -14,4 +14,5 @@ public interface IProductDatabase {
 	
 	public void open() throws DatabaseException;
 	public void close() throws DatabaseException;
+	
 }

@@ -11,15 +11,10 @@ public class MailSubscription implements Observer {
 	private Observable shop;
 	private boolean subscribed;
 	
-	public MailSubscription(Customer customer, Observable shop, boolean subscribed) throws DatabaseException, DomainException {
-		this.customer = customer;
-		this.shop = shop;
-		
-		if(subscribed) {
-			this.shop.registerSubscriber(this);
-		} else {
-			setSubscribed(false);
-		}
+	public MailSubscription(Customer customer, Observable shop) throws DatabaseException, DomainException {
+		setCustomer(customer);
+		setShop(shop);
+		setSubscribed(false);
 	}
 	
 	@Override

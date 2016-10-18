@@ -69,9 +69,12 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String firstName = result.getString("firstname");
 				String lastName = result.getString("lastname");
 				String email = result.getString("email");
-				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
+				Boolean subscribed = result.getBoolean("subscribed");
 
-				c = new Customer(firstName, lastName, email, id, subscribed, shop);
+				c = new Customer(firstName, lastName, email, id, shop);
+				if(subscribed) {
+					shop.registerSubscriber(c.getMailSubscription());
+				}
 			} else {
 				throw new DatabaseException("There is no customer with the given ID");
 			}
@@ -104,7 +107,10 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				int id = Integer.parseInt(result.getString("id"));
 				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
 
-				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
+				Customer c = new Customer(firstName, lastName, email, id, shop);
+				if(subscribed) {
+					shop.registerSubscriber(c.getMailSubscription());
+				}
 				customers.add(c);
 			}
 			result.close();
@@ -160,7 +166,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 
 		String sql = "UPDATE customer " + "SET subscribed ='" + (c.getMailSubscription().isSubscribed() ? 1 : 0) + "' " + " WHERE id ='"
 				+ c.getId() + "'";
-
+		
 		try {
 			this.statement = connection.prepareStatement(sql);
 			this.statement.execute();
@@ -204,7 +210,8 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String email = result.getString("email");
 				int id = Integer.parseInt(result.getString("id"));
 
-				Customer c = new Customer(firstName, lastName, email, id, true, shop);
+				Customer c = new Customer(firstName, lastName, email, id, shop);
+				shop.registerSubscriber(c.getMailSubscription());
 				subscribers.add(c.getMailSubscription());
 			}
 		} catch (Exception e) {

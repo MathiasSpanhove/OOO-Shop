@@ -112,8 +112,11 @@ public class Shop implements Observable {
 	
 	public void addCustomer(String firstName, String lastName, String email, int id, boolean subscribed, Observable shop) 
 			throws DatabaseException, DomainException {
-		Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, shop);
+		Customer newCustomer = new Customer(firstName, lastName, email, id, shop);
 		customerDb.addCustomer(newCustomer);
+		if(subscribed) {
+			registerSubscriber(newCustomer.getMailSubscription());
+		}
 	}
 	
 	public void updateCustomer(Customer p) throws DatabaseException {
