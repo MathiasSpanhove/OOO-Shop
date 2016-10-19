@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import domain.Shop;
 import domain.product.Product;
+import exception.CancelledException;
 import exception.DatabaseException;
 import exception.DomainException;
 import exception.StateException;
@@ -76,12 +77,10 @@ public class ProductUI {
 
 	protected void addProduct() {
 		try {
-			String title = JOptionPane.showInputDialog(null, "Enter the title:", "Add Product",
-					JOptionPane.PLAIN_MESSAGE);
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Add Product", JOptionPane.PLAIN_MESSAGE));
-			Character type = JOptionPane.showInputDialog(null, "Enter the type (M for movie/G for game/C for CD):",
-					"Add Product", JOptionPane.PLAIN_MESSAGE).charAt(0);
+			String title = showJOptionInputDialog("Enter the title:", "Add Product");
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Add Product"));
+			Character type = showJOptionInputDialog("Enter the type (M for movie/G for game/C for CD):", "Add Product")
+					.charAt(0);
 
 			shop.addProduct(id, title, type);
 			JOptionPane.showMessageDialog(null, "Product succesfully added to the database");
@@ -94,13 +93,14 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
 	protected void showProduct() {
 		try {
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Show Product", JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Product"));
 			JOptionPane.showMessageDialog(null, shop.getProduct(id).getTitle());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -108,15 +108,15 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
 	protected void showPrice() {
 		try {
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Show Price", JOptionPane.PLAIN_MESSAGE));
-			int days = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of days:", "Show Price",
-					JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Price"));
+			int days = Integer.parseInt(showJOptionInputDialog("Enter number of days:", "Show Price"));
 			JOptionPane.showMessageDialog(null, shop.getProduct(id).getPrice(days));
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -127,6 +127,8 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
@@ -144,8 +146,7 @@ public class ProductUI {
 
 	protected void showProductState() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Show Product State",
-					JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Product State"));
 			JOptionPane.showMessageDialog(null, "This product is " + shop.getProduct(id).getCurrentState().toString());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -153,13 +154,14 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
 	protected void borrowProduct() {
 		try {
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Borrow Product", JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Borrow Product"));
 			Product p = shop.getProduct(id);
 			p.borrowProduct();
 			shop.updateProduct(p);
@@ -172,13 +174,14 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
 	protected void returnProduct() {
 		try {
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Return Product", JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Return Product"));
 			Product p = shop.getProduct(id);
 
 			int n = JOptionPane.showConfirmDialog(null, "Is the product damaged?", "Return product",
@@ -200,13 +203,14 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
 	protected void repairProduct() {
 		try {
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Repair Product", JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Repair Product"));
 			Product p = shop.getProduct(id);
 			p.repairProduct();
 			shop.updateProduct(p);
@@ -219,13 +223,14 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
 		}
 	}
 
 	protected void deleteProduct() {
 		try {
-			int id = Integer.parseInt(
-					JOptionPane.showInputDialog(null, "Enter the id:", "Remove Product", JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Remove Product"));
 
 			int n = JOptionPane.showConfirmDialog(null,
 					"Are you sure that you want to permanently remove this product?", "Remove Product",
@@ -246,6 +251,18 @@ public class ProductUI {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
+		} catch (CancelledException e) {
+			return;
+		}
+	}
+
+	private String showJOptionInputDialog(String message, String title) throws CancelledException {
+		String value = JOptionPane.showInputDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+
+		if (value == null) {
+			throw new CancelledException("User pressed the cancel button");
+		} else {
+			return value;
 		}
 	}
 }
