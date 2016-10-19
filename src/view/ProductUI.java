@@ -158,8 +158,8 @@ public class ProductUI {
 
 	protected void borrowProduct() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Borrow Product",
-					JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(
+					JOptionPane.showInputDialog(null, "Enter the id:", "Borrow Product", JOptionPane.PLAIN_MESSAGE));
 			Product p = shop.getProduct(id);
 			p.borrowProduct();
 			shop.updateProduct(p);
@@ -177,8 +177,8 @@ public class ProductUI {
 
 	protected void returnProduct() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Return Product",
-					JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(
+					JOptionPane.showInputDialog(null, "Enter the id:", "Return Product", JOptionPane.PLAIN_MESSAGE));
 			Product p = shop.getProduct(id);
 
 			int n = JOptionPane.showConfirmDialog(null, "Is the product damaged?", "Return product",
@@ -205,8 +205,8 @@ public class ProductUI {
 
 	protected void repairProduct() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Repair Product",
-					JOptionPane.PLAIN_MESSAGE));
+			int id = Integer.parseInt(
+					JOptionPane.showInputDialog(null, "Enter the id:", "Repair Product", JOptionPane.PLAIN_MESSAGE));
 			Product p = shop.getProduct(id);
 			p.repairProduct();
 			shop.updateProduct(p);
@@ -224,11 +224,19 @@ public class ProductUI {
 
 	protected void deleteProduct() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Delete Product",
-					JOptionPane.PLAIN_MESSAGE));
-			Product p = shop.getProduct(id);
-			p.deleteProduct();
-			shop.updateProduct(p);
+			int id = Integer.parseInt(
+					JOptionPane.showInputDialog(null, "Enter the id:", "Remove Product", JOptionPane.PLAIN_MESSAGE));
+
+			int n = JOptionPane.showConfirmDialog(null,
+					"Are you sure that you want to permanently remove this product?", "Remove Product",
+					JOptionPane.YES_NO_OPTION);
+
+			if (n == JOptionPane.YES_OPTION) {
+				Product p = shop.getProduct(id);
+				p.deleteProduct();
+				shop.deleteProduct(id);
+				JOptionPane.showMessageDialog(null, "Product succesfully removed from the database");
+			}
 		} catch (StateException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
