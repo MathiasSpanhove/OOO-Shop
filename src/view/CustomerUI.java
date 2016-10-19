@@ -11,22 +11,18 @@ import exception.DomainException;
 public class CustomerUI {
 	Shop shop;
 	ShopUI shopUI;
-	
+
 	public CustomerUI(Shop shop, ShopUI shopUI) {
 		this.shop = shop;
 		this.shopUI = shopUI;
 	}
-	
+
 	public void showMenu() {
 		int choice = -1;
-		String menu = "1. Add customer"
-				+ "\n2. Show customer"
-				+ "\n3. Show all customers"
-				+ "\n4. Is customer subscribed?"
-				+ "\n5. Subscribe customer"
-				+ "\n6. Unsubscribe customer"
+		String menu = "1. Add customer" + "\n2. Show customer" + "\n3. Show all customers"
+				+ "\n4. Is customer subscribed?" + "\n5. Subscribe customer" + "\n6. Unsubscribe customer"
 				+ "\n\n0. Back";
-		
+
 		while (choice != 0) {
 			try {
 				String choiceString = JOptionPane.showInputDialog(menu);
@@ -34,8 +30,8 @@ public class CustomerUI {
 					break;
 				} else {
 					choice = Integer.parseInt(choiceString);
-					
-					switch(choice) {
+
+					switch (choice) {
 					case 0:
 						break;
 					case 1:
@@ -69,15 +65,16 @@ public class CustomerUI {
 
 	protected void addCustomer() {
 		try {
-			String firstName = JOptionPane.showInputDialog("Enter first name:");
-			String lastName = JOptionPane.showInputDialog("Enter last name:");
-			String email = JOptionPane.showInputDialog("Enter email:");
-			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			
-			int n = JOptionPane.showConfirmDialog(null,"Is the customer subscribed?", "Subscribed?", JOptionPane.YES_NO_OPTION);
+			String firstName = JOptionPane.showInputDialog(null, "Enter first name:", "Add Customer", JOptionPane.PLAIN_MESSAGE);
+			String lastName = JOptionPane.showInputDialog(null, "Enter last name:", "Add Customer",	JOptionPane.PLAIN_MESSAGE);
+			String email = JOptionPane.showInputDialog(null, "Enter email:", "Add Customer", JOptionPane.PLAIN_MESSAGE);
+			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Add Customer", JOptionPane.PLAIN_MESSAGE));
+
+			int n = JOptionPane.showConfirmDialog(null, "Is the customer subscribed?", "Subscribed?", JOptionPane.YES_NO_OPTION);
 			boolean subscribed = (n == JOptionPane.YES_OPTION);
-			
 			shop.addCustomer(firstName, lastName, email, id, subscribed, this.shop);
+			
+			JOptionPane.showMessageDialog(null, "Customer succesfully added to the database");			
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -89,11 +86,12 @@ public class CustomerUI {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void showCustomer() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getFirstName() + " " + shop.getCustomer(id).getLastName());
+			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Show Customer", JOptionPane.PLAIN_MESSAGE));
+			JOptionPane.showMessageDialog(null,
+					shop.getCustomer(id).getFirstName() + " " + shop.getCustomer(id).getLastName());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -102,7 +100,7 @@ public class CustomerUI {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void showAllCustomers() {
 		try {
 			JOptionPane.showMessageDialog(null, shop.customersToString());
@@ -114,20 +112,21 @@ public class CustomerUI {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void isCustomerSubscribed() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
-			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getMailSubscription().isSubscribed() ? "Customer is subscribed" : "Customer isn't subscribed");
+			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Is Customer Subscribed?", JOptionPane.PLAIN_MESSAGE));
+			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getMailSubscription().isSubscribed()
+					? "Customer is subscribed" : "Customer isn't subscribed");
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void subscribeCustomer() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Subscribe Customer", JOptionPane.PLAIN_MESSAGE));
 			shop.registerSubscriber(shop.getCustomer(id).getMailSubscription());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -137,10 +136,10 @@ public class CustomerUI {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void unsubscribeCustomer() {
 		try {
-			int id = Integer.parseInt(JOptionPane.showInputDialog("Enter the id:"));
+			int id = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the id:", "Unsubscribe Customer", JOptionPane.PLAIN_MESSAGE));
 			shop.removeSubscriber(shop.getCustomer(id).getMailSubscription());
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

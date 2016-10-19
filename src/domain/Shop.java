@@ -30,7 +30,7 @@ public class Shop implements Observable {
 	public Shop() throws DatabaseException, DomainException {
 		this.productDb = new ProductDatabaseSQL();
 		this.customerDb = new CustomerDatabaseSQL(this);
-		this.observers = new ArrayList<Observer>();
+		this.observers = customerDb.getSubscribers();
 		this.statistics = new Statistics(this);
 	}
 	
@@ -112,9 +112,10 @@ public class Shop implements Observable {
 	
 	public void addCustomer(String firstName, String lastName, String email, int id, boolean subscribed, Observable shop) 
 			throws DatabaseException, DomainException {
-		Customer newCustomer = new Customer(firstName, lastName, email, id, shop);
+		Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, shop);
 		customerDb.addCustomer(newCustomer);
-		if(subscribed) {
+		
+		if (subscribed) {
 			registerSubscriber(newCustomer.getMailSubscription());
 		}
 	}

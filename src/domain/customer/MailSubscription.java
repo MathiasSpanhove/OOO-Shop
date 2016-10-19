@@ -15,10 +15,10 @@ public class MailSubscription implements Observer {
 	private Observable shop;
 	private boolean subscribed;
 	
-	public MailSubscription(Customer customer, Observable shop) throws DatabaseException, DomainException {
+	public MailSubscription(Customer customer, boolean subscribed, Observable shop) throws DatabaseException, DomainException {
 		setCustomer(customer);
 		setShop(shop);
-		setSubscribed(false);
+		setSubscribed(subscribed);
 	}
 	
 	@Override
@@ -26,8 +26,8 @@ public class MailSubscription implements Observer {
 		if(arg instanceof Product) {
 			Product p = (Product)arg;
 			System.out.println("Mail - 'New product: " + p.getTitle() + "' - sent to " + customer.getEmail());
-			loadProperties();
-			sendFromGMail("subject", "body", "smtp.gmail.com");
+			// loadProperties();
+			// sendFromGMail("subject", "body", "smtp.gmail.com");
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class MailSubscription implements Observer {
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 		} catch (Exception e) {
-			throw new DomainException(e.getMessage(), e);
+			throw new DomainException(e.getMessage());
 		}
 	}
 	

@@ -36,7 +36,7 @@ public class ShopUI extends JFrame {
 		this.setLocationRelativeTo(null);
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(5, 1, 5, 5));
+		panel.setLayout(new GridLayout(3, 1, 5, 5));
 		this.add(panel);
 		setContentPane(panel);
 
@@ -54,8 +54,8 @@ public class ShopUI extends JFrame {
 		JButton buttonShowCustomer = new JButton("Show customer");
 		JButton buttonShowAllCustomers = new JButton("Show all customers");
 		JButton buttonIsSubscribed = new JButton("Is customer subscribed?");
-		JButton buttonSubscribe = new JButton("Subscribe");
-		JButton buttonUnsubscribe = new JButton("Unsubscribe");
+		JButton buttonSubscribe = new JButton("Subscribe customer");
+		JButton buttonUnsubscribe = new JButton("Unsubscribe customer");
 		
 		JPanel menu = new JPanel();
 		menu.setLayout(new GridLayout(3, 2, 5, 5));
@@ -69,34 +69,24 @@ public class ShopUI extends JFrame {
 		menu.add(buttonShowAllCustomers);
 
 		JPanel menu1 = new JPanel();
-		menu1.setLayout(new GridLayout(2, 1, 5, 5));
+		menu1.setLayout(new GridLayout(3, 1, 5, 5));
 		panel.add(menu1);
 		
 		menu1.add(buttonShowPrice);
 		menu1.add(buttonCheckState);
-
-		JPanel stateMenu = new JPanel();
-		stateMenu.setLayout(new GridLayout(2, 2, 5, 5));
-		panel.add(stateMenu);
-
-		stateMenu.add(buttonBorrowProduct);
-		stateMenu.add(buttonReturnProduct);
-		stateMenu.add(buttonRepairProduct);
-		stateMenu.add(buttonRemoveProduct);
-
+		menu1.add(buttonIsSubscribed);
+		
 		JPanel menu2 = new JPanel();
-		menu2.setLayout(new GridLayout(1, 1, 5, 5));
+		menu2.setLayout(new GridLayout(3, 2, 5, 5));
 		panel.add(menu2);
-		
-		menu2.add(buttonIsSubscribed);
 
-		JPanel subscribeMenu = new JPanel();
-		subscribeMenu.setLayout(new GridLayout(1, 2, 5, 5));
-		panel.add(subscribeMenu);
+		menu2.add(buttonSubscribe);
+		menu2.add(buttonUnsubscribe);
+		menu2.add(buttonBorrowProduct);
+		menu2.add(buttonReturnProduct);
+		menu2.add(buttonRepairProduct);
+		menu2.add(buttonRemoveProduct);		
 
-		subscribeMenu.add(buttonSubscribe);
-		subscribeMenu.add(buttonUnsubscribe);
-		
 		revalidate();
 
 		// product
@@ -104,63 +94,81 @@ public class ShopUI extends JFrame {
 		buttonAddProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.addProduct();
+				setVisible(true);
 			}
 		});
 
 		buttonShowProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.showProduct();
+				setVisible(true);
 			}
 		});
 
 		buttonShowAllProducts.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.showAllProducts();
+				setVisible(true);
 			}
 		});
 
 		buttonShowPrice.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.showPrice();
+				setVisible(true);
 			}
 		});
 
 		buttonCheckState.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.showProductState();
+				setVisible(true);
 			}
 		});
 
 		buttonBorrowProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.borrowProduct();
+				setVisible(true);
 			}
 		});
 
 		buttonReturnProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.returnProduct();
+				setVisible(true);
 			}
 		});
 
 		buttonRepairProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.repairProduct();
+				setVisible(true);
 			}
 		});
 
 		buttonRemoveProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				productUI.deleteProduct();
+				setVisible(true);
 			}
 		});
 
@@ -169,42 +177,54 @@ public class ShopUI extends JFrame {
 		buttonAddCustomer.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				customerUI.addCustomer();
+				setVisible(true);
 			}
 		});
 
 		buttonShowCustomer.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				customerUI.showCustomer();
+				setVisible(true);
 			}
 		});
 
 		buttonShowAllCustomers.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				customerUI.showAllCustomers();
+				setVisible(true);
 			}
 		});
 
 		buttonIsSubscribed.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				customerUI.isCustomerSubscribed();
+				setVisible(true);
 			}
 		});
 
 		buttonSubscribe.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				customerUI.subscribeCustomer();
+				setVisible(true);
 			}
 		});
 
 		buttonUnsubscribe.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
 				customerUI.unsubscribeCustomer();
+				setVisible(true);
 			}
 		});
 	}

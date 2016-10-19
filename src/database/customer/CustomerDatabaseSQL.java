@@ -71,10 +71,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String email = result.getString("email");
 				Boolean subscribed = result.getBoolean("subscribed");
 
-				c = new Customer(firstName, lastName, email, id, shop);
-				if(subscribed) {
-					shop.registerSubscriber(c.getMailSubscription());
-				}
+				c = new Customer(firstName, lastName, email, id, subscribed, shop);
 			} else {
 				throw new DatabaseException("There is no customer with the given ID");
 			}
@@ -107,10 +104,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				int id = Integer.parseInt(result.getString("id"));
 				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
 
-				Customer c = new Customer(firstName, lastName, email, id, shop);
-				if(subscribed) {
-					shop.registerSubscriber(c.getMailSubscription());
-				}
+				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
 				customers.add(c);
 			}
 			result.close();
@@ -209,9 +203,9 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				String lastName = result.getString("lastname");
 				String email = result.getString("email");
 				int id = Integer.parseInt(result.getString("id"));
+				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
 
-				Customer c = new Customer(firstName, lastName, email, id, shop);
-				shop.registerSubscriber(c.getMailSubscription());
+				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
 				subscribers.add(c.getMailSubscription());
 			}
 		} catch (Exception e) {

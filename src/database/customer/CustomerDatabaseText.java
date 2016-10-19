@@ -96,11 +96,7 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 				String email = line.next();
 				boolean subscribed = line.nextBoolean();
 				
-				Customer newCustomer = new Customer(firstName, lastName, email, id, this.shop);
-				if(subscribed) {
-					this.shop.registerSubscriber(newCustomer.getMailSubscription());
-				}
-				
+				Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, this.shop);
 				this.customers.put(id, newCustomer);						
 			}
 			if(scanner != null) {

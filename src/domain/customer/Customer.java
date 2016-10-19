@@ -10,13 +10,13 @@ public class Customer {
 	private int id;
 	private MailSubscription mailSubscription;
 	
-	public Customer(String firstName, String lastName, String email, int id, Observable shop) throws DatabaseException, DomainException {
+	public Customer(String firstName, String lastName, String email, int id, boolean subscribed, Observable shop) throws DatabaseException, DomainException {
 		setFirstName(firstName);
 		setLastName(lastName);
 		setEmail(email);
 		setId(id);
 		
-		this.mailSubscription = new MailSubscription(this, shop);
+		this.mailSubscription = new MailSubscription(this, subscribed, shop);
 	}
 	
 	@Override

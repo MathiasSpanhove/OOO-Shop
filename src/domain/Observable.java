@@ -8,6 +8,6 @@ public interface Observable {
 	
 	public void registerSubscriber(Observer o) throws DatabaseException, DomainException;
 	public void removeSubscriber(Observer o) throws DatabaseException, DomainException;
-	public void notifySubscribers(Object arg) throws DatabaseException;
+	public void notifySubscribers(Object arg) throws DatabaseException, DomainException;
 	
 }
