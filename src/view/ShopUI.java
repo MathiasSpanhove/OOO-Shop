@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,11 +11,12 @@ import domain.Shop;
 import exception.DatabaseException;
 import exception.DomainException;
 
+@SuppressWarnings("serial")
 public class ShopUI extends JFrame {
 	private Shop shop;
 	private ProductUI productUI;
 	private CustomerUI customerUI;
-	
+
 	public ShopUI() {
 		try {
 			shop = new Shop();
@@ -25,73 +27,221 @@ public class ShopUI extends JFrame {
 		}
 		this.productUI = new ProductUI(shop, this);
 		this.customerUI = new CustomerUI(shop, this);
-		
+
 	}
-	
-	public void showMenu() {
-		this.setSize(new Dimension(200,200));
+
+	public void showMenuSwing() {
+		this.setVisible(true);
+		this.setSize(new Dimension(400, 800));
+		this.setLocationRelativeTo(null);
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(5, 1, 5, 5));
+		this.add(panel);
+		setContentPane(panel);
+
+		JButton buttonAddProduct = new JButton("Add product");
+		JButton buttonShowProduct = new JButton("Show product");
+		JButton buttonShowAllProducts = new JButton("Show all products");
+		JButton buttonShowPrice = new JButton("Show rental price");
+		JButton buttonCheckState = new JButton("Check product state");
+		JButton buttonBorrowProduct = new JButton("Borrow product");
+		JButton buttonReturnProduct = new JButton("Return product");
+		JButton buttonRepairProduct = new JButton("Repair product");
+		JButton buttonRemoveProduct = new JButton("Remove product");
+
+		JButton buttonAddCustomer = new JButton("Add customer");
+		JButton buttonShowCustomer = new JButton("Show customer");
+		JButton buttonShowAllCustomers = new JButton("Show all customers");
+		JButton buttonIsSubscribed = new JButton("Is customer subscribed?");
+		JButton buttonSubscribe = new JButton("Subscribe");
+		JButton buttonUnsubscribe = new JButton("Unsubscribe");
+		
 		JPanel menu = new JPanel();
-		this.add(menu);
-		setContentPane(menu);
+		menu.setLayout(new GridLayout(3, 2, 5, 5));
+		panel.add(menu);
+
+		menu.add(buttonAddProduct);
+		menu.add(buttonAddCustomer);
+		menu.add(buttonShowProduct);
+		menu.add(buttonShowCustomer);
+		menu.add(buttonShowAllProducts);
+		menu.add(buttonShowAllCustomers);
+
+		JPanel menu1 = new JPanel();
+		menu1.setLayout(new GridLayout(2, 1, 5, 5));
+		panel.add(menu1);
 		
-		JButton button1 = new JButton("product menu");
-		JButton button2 = new JButton("customer menu");
-		menu.add(button1); 
-		menu.add(button2);
+		menu1.add(buttonShowPrice);
+		menu1.add(buttonCheckState);
+
+		JPanel stateMenu = new JPanel();
+		stateMenu.setLayout(new GridLayout(2, 2, 5, 5));
+		panel.add(stateMenu);
+
+		stateMenu.add(buttonBorrowProduct);
+		stateMenu.add(buttonReturnProduct);
+		stateMenu.add(buttonRepairProduct);
+		stateMenu.add(buttonRemoveProduct);
+
+		JPanel menu2 = new JPanel();
+		menu2.setLayout(new GridLayout(1, 1, 5, 5));
+		panel.add(menu2);
 		
-		button1.addActionListener(new ActionListener() {
+		menu2.add(buttonIsSubscribed);
+
+		JPanel subscribeMenu = new JPanel();
+		subscribeMenu.setLayout(new GridLayout(1, 2, 5, 5));
+		panel.add(subscribeMenu);
+
+		subscribeMenu.add(buttonSubscribe);
+		subscribeMenu.add(buttonUnsubscribe);
+		
+		revalidate();
+
+		// product
+
+		buttonAddProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				productUI.setVisible(true);
-				productUI.showMenu();
+				productUI.addProduct();
 			}
 		});
-		
-		button2.addActionListener(new ActionListener() {
+
+		buttonShowProduct.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				customerUI.showMenu();
-				customerUI.setVisible(true);
+				productUI.showProduct();
+			}
+		});
+
+		buttonShowAllProducts.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.showAllProducts();
+			}
+		});
+
+		buttonShowPrice.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.showPrice();
+			}
+		});
+
+		buttonCheckState.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.showProductState();
+			}
+		});
+
+		buttonBorrowProduct.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.borrowProduct();
+			}
+		});
+
+		buttonReturnProduct.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.returnProduct();
+			}
+		});
+
+		buttonRepairProduct.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.repairProduct();
+			}
+		});
+
+		buttonRemoveProduct.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productUI.deleteProduct();
+			}
+		});
+
+		// customer
+
+		buttonAddCustomer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				customerUI.addCustomer();
+			}
+		});
+
+		buttonShowCustomer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				customerUI.showCustomer();
+			}
+		});
+
+		buttonShowAllCustomers.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				customerUI.showAllCustomers();
+			}
+		});
+
+		buttonIsSubscribed.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				customerUI.isCustomerSubscribed();
+			}
+		});
+
+		buttonSubscribe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				customerUI.subscribeCustomer();
+			}
+		});
+
+		buttonUnsubscribe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				customerUI.unsubscribeCustomer();
 			}
 		});
 	}
-	
-	
-//	public void showMenu() {
-//		int choice = -1;
-//		String menu = "1. Product menu"
-//				+ "\n2. Customer menu"
-//				+ "\n\n0. Quit";
-//		
-//		while (choice != 0) {
-//			try {
-//				String choiceString = JOptionPane.showInputDialog(menu);
-//				if (choiceString == null) {
-//					break;
-//				} else {
-//					choice = Integer.parseInt(choiceString);
-//					
-//					switch(choice) {
-//					case 0:
-//						break;
-//					case 1:
-//						productUI.showMenu();
-//						break;
-//					case 2:
-//						costumerUI.showMenu();
-//						break;
-//					default:
-//						JOptionPane.showMessageDialog(null, "Please enter a valid number");
-//					}
-//				}
-//				
-//			} catch (NumberFormatException e) {
-//				JOptionPane.showMessageDialog(null, "Please enter a number");
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		shop.close();
-//	}
-	
+
+	public void showMenuJOptionPane() {
+		int choice = -1;
+		String menu = "1. Product menu" + "\n2. Customer menu" + "\n\n0. Quit";
+
+		while (choice != 0) {
+			try {
+				String choiceString = JOptionPane.showInputDialog(menu);
+				if (choiceString == null) {
+					break;
+				} else {
+					choice = Integer.parseInt(choiceString);
+
+					switch (choice) {
+					case 0:
+						break;
+					case 1:
+						this.productUI.showMenu();
+						break;
+					case 2:
+						this.customerUI.showMenu();
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+					}
+				}
+
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Please enter a number");
+				e.printStackTrace();
+			}
+		}
+
+		shop.close();
+	}
+
 }
