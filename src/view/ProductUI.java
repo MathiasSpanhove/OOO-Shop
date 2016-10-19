@@ -1,8 +1,11 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import domain.Shop;
 import domain.product.Product;
@@ -10,7 +13,7 @@ import exception.DatabaseException;
 import exception.DomainException;
 import exception.StateException;
 
-public class ProductUI {
+public class ProductUI extends JFrame {
 	Shop shop;
 	ShopUI shopUI;
 	
@@ -20,66 +23,164 @@ public class ProductUI {
 	}
 	
 	public void showMenu() {
-		int choice = -1;
-		String menu = "1. Add product"
-				+ "\n2. Show product"
-				+ "\n3. Show rental price"
-				+ "\n4. Show all products"
-				+ "\n5. Check product state"
-				+ "\n6. Borrow product"
-				+ "\n7. Return product"
-				+ "\n8. Repair product"
-				+ "\n9. Remove product"
-				+ "\n\n0. Back";
+		this.setSize(new Dimension(200,400));
+		JPanel menu = new JPanel();
+		this.add(menu);
+		setContentPane(menu);
 		
-		while (choice != 0) {
-			try {
-				String choiceString = JOptionPane.showInputDialog(menu);
-				if (choiceString == null) {
-					break;
-				} else {
-					choice = Integer.parseInt(choiceString);
-					
-					switch(choice) {
-					case 0:
-						break;
-					case 1:
-						addProduct();
-						break;
-					case 2:
-						showProduct();
-						break;
-					case 3:
-						showPrice();
-						break;
-					case 4:
-						showAllProducts();
-						break;
-					case 5:
-						showProductState();
-						break;
-					case 6:
-						borrowProduct();
-						break;
-					case 7:
-						returnProduct();
-						break;
-					case 8:
-						repairProduct();
-						break;
-					case 9:
-						deleteProduct();
-						break;
-					default:
-						JOptionPane.showMessageDialog(null, "Please enter a valid number");
-					}
-				}
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Please enter a number");
-				e.printStackTrace();
+		JButton button1 = new JButton("Add product");
+		JButton button2 = new JButton("Show product");
+		JButton button3 = new JButton("Show all products");
+		JButton button4 = new JButton("Show rental price");
+		JButton button5 = new JButton("Check product state");
+		JButton button6 = new JButton("Borrow product");
+		JButton button7 = new JButton("Return product");
+		JButton button8 = new JButton("Repair product");
+		JButton button9 = new JButton("Remove product");
+		JButton button0 = new JButton("Back");
+		menu.add(button1); 
+		menu.add(button2);
+		menu.add(button3); 
+		menu.add(button4);
+		menu.add(button5); 
+		menu.add(button6);
+		menu.add(button7);
+		menu.add(button8); 
+		menu.add(button9);
+		menu.add(button0); 
+		
+		button1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addProduct();
 			}
-		}
+		});
+		
+		button2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showProduct();
+			}
+		});
+		
+		button3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showAllProducts();
+			}
+		});
+		
+		button4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showPrice();
+			}
+		});
+		
+		button5.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showProductState();
+			}
+		});
+		
+		button6.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				borrowProduct();
+			}
+		});
+		
+		button7.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				returnProduct();
+			}
+		});
+		
+		button8.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				repairProduct();
+			}
+		});
+		
+		button9.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deleteProduct();
+			}
+		});
+		
+		button0.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				shopUI.showMenu();
+			}
+		});
 	}
+	
+//	public void showMenu() {
+//		int choice = -1;
+//		String menu = "1. Add product"
+//				+ "\n2. Show product"
+//				+ "\n3. Show rental price"
+//				+ "\n4. Show all products"
+//				+ "\n5. Check product state"
+//				+ "\n6. Borrow product"
+//				+ "\n7. Return product"
+//				+ "\n8. Repair product"
+//				+ "\n9. Remove product"
+//				+ "\n\n0. Back";
+//		
+//		while (choice != 0) {
+//			try {
+//				String choiceString = JOptionPane.showInputDialog(menu);
+//				if (choiceString == null) {
+//					break;
+//				} else {
+//					choice = Integer.parseInt(choiceString);
+//					
+//					switch(choice) {
+//					case 0:
+//						break;
+//					case 1:
+//						addProduct();
+//						break;
+//					case 2:
+//						showProduct();
+//						break;
+//					case 3:
+//						showPrice();
+//						break;
+//					case 4:
+//						showAllProducts();
+//						break;
+//					case 5:
+//						showProductState();
+//						break;
+//					case 6:
+//						borrowProduct();
+//						break;
+//					case 7:
+//						returnProduct();
+//						break;
+//					case 8:
+//						repairProduct();
+//						break;
+//					case 9:
+//						deleteProduct();
+//						break;
+//					default:
+//						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+//					}
+//				}
+//			} catch (NumberFormatException e) {
+//				JOptionPane.showMessageDialog(null, "Please enter a number");
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	private void addProduct() {
 		try {
