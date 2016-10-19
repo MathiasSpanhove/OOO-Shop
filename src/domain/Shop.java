@@ -174,7 +174,7 @@ public class Shop implements Observable {
 	}
 
 	@Override
-	public void notifySubscribers(Object arg) throws DatabaseException {
+	public void notifySubscribers(Object arg) throws DatabaseException, DomainException {
 		for(Observer o : customerDb.getSubscribers()) {
 			o.update(arg);
 		}
