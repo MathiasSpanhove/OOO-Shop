@@ -68,12 +68,12 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 	}
 
 	@Override
-	public List<Observer> getSubscribers() throws DatabaseException {
-		List<Observer> subscribers = new ArrayList<Observer>();
+	public Map<Integer, Observer> getSubscribers() throws DatabaseException {
+		Map<Integer,Observer> subscribers = new HashMap<Integer, Observer>();
 		
 		for(Customer c : getAllCustomers()) {
 			if(c.getMailSubscription().isSubscribed()) {
-				subscribers.add(c.getMailSubscription());
+				subscribers.put(c.getId(), c.getMailSubscription());
 			}
 		}
 		

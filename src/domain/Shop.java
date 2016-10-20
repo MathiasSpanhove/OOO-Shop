@@ -3,7 +3,11 @@ package domain;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import database.customer.CustomerDatabaseSQL;
 import database.customer.CustomerDatabaseText;
 import database.customer.ICustomerDatabase;
@@ -24,7 +28,7 @@ public class Shop implements Observable {
 	
 	private IProductDatabase productDb;
 	private ICustomerDatabase customerDb;
-	private List<Observer> observers;
+	private Map<Integer, Observer> observers;
 	private Statistics statistics;
 	
 	public Shop() throws DatabaseException, DomainException {
@@ -149,11 +153,11 @@ public class Shop implements Observable {
 		if(o instanceof MailSubscription) {
 			MailSubscription m = (MailSubscription) o;
 			
-			if(m.isSubscribed()) {
+			if(this.observers.containsKey(m.getCustomer().getId())) {
 				throw new DomainException("Customer is already subscribed.");
 			}
 			
-			this.observers.add(m);
+			this.observers.put(m.getCustomer().getId(), m);
 			m.setSubscribed(true);
 			customerDb.updateCustomer(m.getCustomer());
 		}
@@ -164,11 +168,11 @@ public class Shop implements Observable {
 		if(o instanceof MailSubscription) {
 			MailSubscription m = (MailSubscription) o;
 			
-			if(!m.isSubscribed()) {
+			if(!this.observers.containsKey(m.getCustomer().getId())) {
 				throw new DomainException("Customer is not subscribed.");
 			}
 			
-			this.observers.remove(m);
+			this.observers.remove(m.getCustomer().getId());
 			m.setSubscribed(false);
 			customerDb.updateCustomer(m.getCustomer());
 		}
@@ -176,8 +180,8 @@ public class Shop implements Observable {
 
 	@Override
 	public void notifySubscribers(Object arg) throws DatabaseException, DomainException {
-		for(Observer o : customerDb.getSubscribers()) {
-			o.update(arg);
+		for (Entry<Integer, Observer> entry : customerDb.getSubscribers().entrySet()) {
+			entry.getValue().update(arg);
 		}
 	}
 }

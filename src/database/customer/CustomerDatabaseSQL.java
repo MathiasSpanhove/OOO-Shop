@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import domain.Shop;
@@ -188,10 +190,10 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	}
 
 	@Override
-	public List<Observer> getSubscribers() throws DatabaseException {
+	public Map<Integer, Observer> getSubscribers() throws DatabaseException {
 		this.open();
 
-		List<Observer> subscribers = new ArrayList<Observer>();
+		Map<Integer, Observer> subscribers = new HashMap<Integer, Observer>();
 		String sq1 = "SELECT * FROM customer " + "WHERE subscribed = 1";
 
 		try {
@@ -206,7 +208,7 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 				Boolean subscribed = Boolean.parseBoolean(result.getString("subscribed"));
 
 				Customer c = new Customer(firstName, lastName, email, id, subscribed, shop);
-				subscribers.add(c.getMailSubscription());
+				subscribers.put(c.getId(), c.getMailSubscription());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
