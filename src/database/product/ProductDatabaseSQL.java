@@ -3,15 +3,11 @@ package database.product;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import com.mysql.jdbc.DatabaseMetaData;
-
 import domain.product.Product;
 import domain.product.enums.Products;
 import exception.DatabaseException;
@@ -23,8 +19,9 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	private PreparedStatement statement;
 	private Properties properties;
 	private static final String URL = "jdbc:mysql://sql7.freesqldatabase.com/sql7139719";
-
-	public ProductDatabaseSQL() {
+	private volatile static ProductDatabaseSQL uniqueInstance;	
+	
+	private ProductDatabaseSQL() {
 		// properties voor verbinding maken
 		this.properties = new Properties();
 		this.properties.setProperty("user", "sql7139719");
@@ -39,6 +36,17 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static ProductDatabaseSQL getInstance() {
+		if(uniqueInstance == null) {
+			synchronized (ProductDatabaseSQL.class) {
+				if(uniqueInstance == null) {
+					uniqueInstance = new ProductDatabaseSQL();
+				}
+			}
+		}
+		return uniqueInstance;
 	}
 
 	private void createProductTable() throws DatabaseException {

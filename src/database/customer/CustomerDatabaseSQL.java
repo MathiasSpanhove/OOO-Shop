@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import domain.Shop;
 import domain.customer.Customer;
 import domain.customer.Observer;
@@ -24,8 +22,9 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	private Properties properties;
 	private static final String URL = "jdbc:mysql://sql7.freesqldatabase.com/sql7139719";
 	private Shop shop;
+	private volatile static CustomerDatabaseSQL uniqueInstance;
 
-	public CustomerDatabaseSQL(Shop shop) {
+	private CustomerDatabaseSQL(Shop shop) {
 		// properties voor verbinding maken
 		this.properties = new Properties();
 		this.properties.setProperty("user", "sql7139719");
@@ -42,6 +41,17 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 		}
 
 		this.shop = shop;
+	}
+	
+	public static CustomerDatabaseSQL getInstance(Shop shop) {
+		if(uniqueInstance == null) {
+			synchronized (CustomerDatabaseSQL.class) {
+				if(uniqueInstance == null) {
+					uniqueInstance = new CustomerDatabaseSQL(shop);
+				}
+			}
+		}
+		return uniqueInstance;
 	}
 
 	private void createCustomerTable() throws DatabaseException {

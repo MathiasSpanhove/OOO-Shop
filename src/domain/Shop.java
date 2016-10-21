@@ -32,8 +32,8 @@ public class Shop implements Observable {
 	private Statistics statistics;
 	
 	public Shop() throws DatabaseException, DomainException {
-		this.productDb = new ProductDatabaseSQL();
-		this.customerDb = new CustomerDatabaseSQL(this);
+		this.productDb = ProductDatabaseSQL.getInstance();
+		this.customerDb = CustomerDatabaseSQL.getInstance(this);
 		this.observers = customerDb.getSubscribers();
 		this.statistics = new Statistics(this);
 	}

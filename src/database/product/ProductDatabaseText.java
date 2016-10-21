@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
 import domain.product.Product;
 import domain.product.enums.Products;
 import exception.DatabaseException;
@@ -18,11 +17,23 @@ public class ProductDatabaseText implements IProductDatabase {
 
 	private Map<Integer, Product> products;
 	private File file;
+	private volatile static ProductDatabaseText uniqueInstance;
 	
-	public ProductDatabaseText() {
+	private ProductDatabaseText() {
 		file = new File("ProductDatabase.txt");
 		this.products = new HashMap<Integer, Product>();
 		open();
+	}
+	
+	public static ProductDatabaseText getInstance() {
+		if(uniqueInstance == null) {
+			synchronized (ProductDatabaseText.class) {
+				if(uniqueInstance == null) {
+					uniqueInstance = new ProductDatabaseText();
+				}
+			}
+		}
+		return uniqueInstance;
 	}
 	
 	@Override

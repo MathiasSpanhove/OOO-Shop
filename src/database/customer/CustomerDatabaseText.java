@@ -18,12 +18,24 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 	private Map<Integer, Customer> customers;
 	private File file;
 	private Shop shop;
+	private volatile static CustomerDatabaseText uniqueInstance;
 	
-	public CustomerDatabaseText(Shop shop) {
+	private CustomerDatabaseText(Shop shop) {
 		file = new File("CustomerDatabase.txt");
 		this.customers = new HashMap<Integer, Customer>();
 		this.shop = shop;
 		open();
+	}
+	
+	public static CustomerDatabaseText getInstance(Shop shop) {
+		if(uniqueInstance == null) {
+			synchronized (CustomerDatabaseText.class) {
+				if(uniqueInstance == null) {
+					uniqueInstance = new CustomerDatabaseText(shop);
+				}
+			}
+		}
+		return uniqueInstance;
 	}
 	
 	@Override
@@ -96,7 +108,7 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 				String email = line.next();
 				boolean subscribed = line.nextBoolean();
 				
-				Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, this.shop);
+				Customer newCustomer = new Customer(firstName, lastName, email, id, subscribed, shop);
 				this.customers.put(id, newCustomer);						
 			}
 			if(scanner != null) {
