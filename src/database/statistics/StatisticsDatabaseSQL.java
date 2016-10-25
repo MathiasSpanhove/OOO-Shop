@@ -10,9 +10,10 @@ import exception.DatabaseException;
 public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 	
 	private volatile static StatisticsDatabaseSQL uniqueInstance;
+	private EnumMap<Products, Integer> statistics;
 	
 	private StatisticsDatabaseSQL() {
-		// TODO Auto-generated constructor stub
+		this.statistics = new EnumMap<Products, Integer>(Products.class);
 	}
 	
 	public static StatisticsDatabaseSQL getInstance() {
@@ -28,8 +29,7 @@ public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 
 	@Override
 	public EnumMap<Products, Integer> getStatistics(LocalDate date) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+		return statistics;
 	}
 
 	@Override
