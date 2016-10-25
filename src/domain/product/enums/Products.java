@@ -9,11 +9,7 @@ import domain.product.Product;
 import exception.DomainException;
 
 public enum Products {
-	CD {
-		public double getPrice() {
-			return (1.5);
-		}
-
+	CD (1.5) {
 		@Override
 		public Product createProduct(String title, int id) throws DomainException {
 			return new CD(title, id);
@@ -26,11 +22,7 @@ public enum Products {
 		}
 	
 	},
-	MOVIE {
-		public double getPrice() {
-			return 3;
-		}
-
+	MOVIE (3) {
 		@Override
 		public Product createProduct(String title, int id) throws DomainException {
 			return new Movie(title, id);
@@ -42,11 +34,7 @@ public enum Products {
 			return new Movie(title, id, lastBorrowed, stateString);
 		}
 	},
-	GAME {
-		public double getPrice() {
-			return 5;
-		}
-
+	GAME (5) {
 		@Override
 		public Product createProduct(String title, int id) throws DomainException {
 			return new Game(title, id);
@@ -59,7 +47,16 @@ public enum Products {
 		}
 	};
 	
-	public abstract double getPrice();
+	private double price;
+	
+	private Products(double price) {
+		this.price = price;
+	}
+	
+	public double getPrice() {
+		return this.price;
+	}
+	
 	public abstract Product createProduct(String title, int id) throws DomainException;
 	public abstract Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException;
 	
