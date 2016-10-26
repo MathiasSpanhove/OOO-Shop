@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 import domain.product.Product;
 import domain.product.enums.Products;
+import domain.product.factory.ProductFactory;
 import exception.DatabaseException;
 
 public class ProductDatabaseText implements IProductDatabase {
@@ -94,9 +95,7 @@ public class ProductDatabaseText implements IProductDatabase {
 				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
 				String stateString = line.next();
 				
-				String value = Products.getProductCharValue(type.charAt(0));
-				Product newProduct = Products.valueOf(value).createProduct(title, id, lastBorrowed, stateString);
-				
+				Product newProduct = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type));
 				this.products.put(id, newProduct);
 			}
 			if(scanner != null) {

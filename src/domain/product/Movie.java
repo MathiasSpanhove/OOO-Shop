@@ -7,10 +7,6 @@ import exception.DomainException;
 
 public class Movie extends Product {
 	
-	public Movie(String title, int id) throws DomainException {
-		super(title, id);
-	}
-	
 	public Movie(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
 		super(title, id, lastBorrowed, stateString);
 	}

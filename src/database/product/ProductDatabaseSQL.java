@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 import domain.product.Product;
 import domain.product.enums.Products;
+import domain.product.factory.ProductFactory;
 import exception.DatabaseException;
 
 public class ProductDatabaseSQL implements IProductDatabase {
@@ -81,8 +82,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 						: LocalDate.parse(lastBorrowedString));
 				String stateString = result.getString("state");
 
-				String value = Products.getProductCharValue(type.charAt(0));
-				product = Products.valueOf(value).createProduct(title, id, lastBorrowed, stateString);
+				product = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type));
 			} else {
 				throw new DatabaseException("There is no product with the given ID");
 			}
@@ -117,9 +117,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 						: LocalDate.parse(lastBorrowedString));
 				String stateString = result.getString("state");
 
-				String value = Products.getProductCharValue(type.charAt(0));
-				Product newProduct = Products.valueOf(value).createProduct(title, id, lastBorrowed, stateString);
-
+				Product newProduct = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type));
 				products.add(newProduct);
 			}
 

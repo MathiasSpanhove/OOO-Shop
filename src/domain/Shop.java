@@ -19,6 +19,7 @@ import domain.customer.MailSubscription;
 import domain.customer.Observer;
 import domain.product.Product;
 import domain.product.enums.Products;
+import domain.product.factory.ProductFactory;
 import domain.statistics.Statistics;
 import exception.DatabaseException;
 import exception.DomainException;
@@ -58,11 +59,9 @@ public class Shop implements Observable {
 	}
 	
 	public void addProduct(int id, String title, String type) throws DatabaseException, DomainException {
-		Products value = Products.valueOf(type);
-		Product newProduct = value.createProduct(title, id);
+		Product newProduct = ProductFactory.createProduct(title, id, null, "available", Products.valueOf(type.toUpperCase()));
 		productDb.addProduct(newProduct);
 		notifySubscribers(newProduct);
-		
 	}
 	
 	public void updateProduct(Product p) throws DatabaseException {

@@ -1,76 +1,37 @@
 package domain.product.enums;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-
-import domain.product.CD;
-import domain.product.Game;
-import domain.product.Movie;
-import domain.product.Product;
-import exception.DomainException;
-
 public enum Products {
-	CD (1.5) {
-		@Override
-		public Product createProduct(String title, int id) throws DomainException {
-			return new CD(title, id);
-		}
-
-		@Override
-		public Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString)
-				throws DomainException {
-			return new CD(title, id, lastBorrowed, stateString);
-		}
-	
-	},
-	MOVIE (3) {
-		@Override
-		public Product createProduct(String title, int id) throws DomainException {
-			return new Movie(title, id);
-		}
-
-		@Override
-		public Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString)
-				throws DomainException {
-			return new Movie(title, id, lastBorrowed, stateString);
-		}
-	},
-	GAME (5) {
-		@Override
-		public Product createProduct(String title, int id) throws DomainException {
-			return new Game(title, id);
-		}
-
-		@Override
-		public Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString)
-				throws DomainException {
-			return new Game(title, id, lastBorrowed, stateString);
-		}
-	};
+	CD (1.5, "CD", "domain.product.CD"),
+	MOVIE (3, "Movie", "domain.product.Movie"),
+	GAME (5, "Game", "domain.product.Game");
 	
 	private double price;
+	private String name, pathName;
 	
-	private Products(double price) {
+	private Products(double price, String name, String pathName) {
 		this.price = price;
+		this.name = name;
+		this.pathName = pathName;
 	}
 	
 	public double getPrice() {
 		return this.price;
 	}
 	
-	public abstract Product createProduct(String title, int id) throws DomainException;
-	public abstract Product createProduct(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException;
-	
-    public static String getProductCharValue(final char character)
-    {
-        for (Products type : Products.values())
-            if (type.name().charAt(0) == character)
-                return type.name();
+	public String getName() {
+		return this.name;
+	}
 
-        return null;
-    }
+	public String getPathName() {
+		return this.pathName;
+	}
     
     public static String[] getNames() {
-        return Arrays.stream(Products.values()).map(Enum::name).toArray(String[]::new);
+    	String[] names = new String[Products.values().length];
+    	for (int i = 0; i < Products.values().length; i++) {
+    		names[i] = Products.values()[i].getName();
+    	}
+    	
+    	return names;
     }
 }

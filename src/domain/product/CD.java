@@ -6,10 +6,6 @@ import domain.product.enums.Products;
 import exception.DomainException;
 
 public class CD extends Product {
-
-	public CD(String title, int id) throws DomainException {
-		super(title, id);
-	}
 	
 	public CD(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
 		super(title, id, lastBorrowed, stateString);

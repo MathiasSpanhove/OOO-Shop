@@ -16,19 +16,6 @@ public abstract class Product {
 	private LocalDate lastBorrowed;
 	private ProductState state, borrowedState, notBorrowedState, removedState, damagedState;
 	
-	public Product(String title, int id) throws DomainException {
-		setId(id);
-		setTitle(title);
-		setLastBorrowed(null);
-		
-		borrowedState = new BorrowedState(this);
-		notBorrowedState = new NotBorrowedState(this);
-		removedState = new RemovedState(this);
-		damagedState = new DamagedState(this);
-		
-		state = notBorrowedState;
-	}
-	
 	public Product(String title, int id, LocalDate lastBorrowed, String stateString) throws DomainException {
 		setId(id);
 		setTitle(title);
@@ -43,14 +30,14 @@ public abstract class Product {
 			case "borrowed":
 				state = borrowedState;
 				break;
-			case "available":
-				state = notBorrowedState;
-				break;
 			case "removed":
 				state = removedState;
 				break;
 			case "damaged":
 				state = damagedState;
+				break;
+			default:
+				state = notBorrowedState;
 				break;
 		}
 	}
