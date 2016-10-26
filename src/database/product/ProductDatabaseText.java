@@ -95,7 +95,7 @@ public class ProductDatabaseText implements IProductDatabase {
 				LocalDate lastBorrowed = (lastBorrowedString.equals("null") ? null : LocalDate.parse(lastBorrowedString));
 				String stateString = line.next();
 				
-				Product newProduct = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type));
+				Product newProduct = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type.toUpperCase()));
 				this.products.put(id, newProduct);
 			}
 			if(scanner != null) {

@@ -82,7 +82,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 						: LocalDate.parse(lastBorrowedString));
 				String stateString = result.getString("state");
 
-				product = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type));
+				product = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type.toUpperCase()));
 			} else {
 				throw new DatabaseException("There is no product with the given ID");
 			}
@@ -117,7 +117,7 @@ public class ProductDatabaseSQL implements IProductDatabase {
 						: LocalDate.parse(lastBorrowedString));
 				String stateString = result.getString("state");
 
-				Product newProduct = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type));
+				Product newProduct = ProductFactory.createProduct(title, id, lastBorrowed, stateString, Products.valueOf(type.toUpperCase()));
 				products.add(newProduct);
 			}
 
