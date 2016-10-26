@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import domain.Shop;
 import domain.product.Product;
+import domain.product.enums.Products;
 import exception.CancelledException;
 import exception.DatabaseException;
 import exception.DomainException;
@@ -79,8 +80,10 @@ public class ProductUI {
 		try {
 			String title = showJOptionInputDialog("Enter the title:", "Add Product");
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Add Product"));
-			Character type = showJOptionInputDialog("Enter the type (M for movie/G for game/C for CD):", "Add Product")
-					.charAt(0);
+						
+			String[] choices = Products.getNames();
+		    String type = (String) showJOptionDropdownDialog("Choose your product type",
+		        "Select type", choices, choices[0]);
 
 			shop.addProduct(id, title, type);
 			JOptionPane.showMessageDialog(null, "Product succesfully added to the database");
@@ -259,6 +262,16 @@ public class ProductUI {
 	private String showJOptionInputDialog(String message, String title) throws CancelledException {
 		String value = JOptionPane.showInputDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
 
+		if (value == null) {
+			throw new CancelledException("User pressed the cancel button");
+		} else {
+			return value;
+		}
+	}
+	
+	private String showJOptionDropdownDialog(String message, String title, String [] list, String def) throws CancelledException {
+		String value = (String) JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE, null, list, def);
+		
 		if (value == null) {
 			throw new CancelledException("User pressed the cancel button");
 		} else {

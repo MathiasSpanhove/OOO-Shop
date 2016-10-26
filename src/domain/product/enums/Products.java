@@ -1,6 +1,7 @@
 package domain.product.enums;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import domain.product.CD;
 import domain.product.Game;
@@ -67,5 +68,9 @@ public enum Products {
                 return type.name();
 
         return null;
+    }
+    
+    public static String[] getNames() {
+        return Arrays.stream(Products.values()).map(Enum::name).toArray(String[]::new);
     }
 }

@@ -57,16 +57,12 @@ public class Shop implements Observable {
 		return productDb.getAllProducts();
 	}
 	
-	public void addProduct(int id, String title, Character type) throws DatabaseException, DomainException {
-		String value = Products.getProductCharValue(type);
+	public void addProduct(int id, String title, String type) throws DatabaseException, DomainException {
+		Products value = Products.valueOf(type);
+		Product newProduct = value.createProduct(title, id);
+		productDb.addProduct(newProduct);
+		notifySubscribers(newProduct);
 		
-		if (value != null) {
-			Product newProduct = Products.valueOf(value).createProduct(title, id);
-			productDb.addProduct(newProduct);
-			notifySubscribers(newProduct);
-		} else {
-			throw new DomainException("Invalid product type.");
-		}
 	}
 	
 	public void updateProduct(Product p) throws DatabaseException {
