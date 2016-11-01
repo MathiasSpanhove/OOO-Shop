@@ -157,6 +157,10 @@ public class Shop implements Observable {
 			m.setSubscribed(true);
 			customerDb.updateCustomer(m.getCustomer());
 		}
+		if(o instanceof Statistics) {
+			//TODO: what integer should it have?
+			this.observers.put(0, o);
+		}
 	}
 
 	@Override
@@ -172,12 +176,21 @@ public class Shop implements Observable {
 			m.setSubscribed(false);
 			customerDb.updateCustomer(m.getCustomer());
 		}
+		if(o instanceof Statistics) {
+			//TODO: what integer should it have?
+			this.observers.remove(0);
+		}
 	}
 
 	@Override
 	public void notifySubscribers(Object arg) throws DatabaseException, DomainException {
-		for (Entry<Integer, Observer> entry : customerDb.getSubscribers().entrySet()) {
+		for (Entry<Integer, Observer> entry : this.observers.entrySet()) {
 			entry.getValue().update(arg);
 		}
+	}
+	
+	//Statistics
+	public String getStatistics() throws DatabaseException {
+		return this.statistics.statsToString();
 	}
 }
