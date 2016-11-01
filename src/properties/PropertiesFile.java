@@ -1,11 +1,13 @@
 package properties;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 public class PropertiesFile {
@@ -13,6 +15,11 @@ public class PropertiesFile {
 	
 	public PropertiesFile() {
 		this.properties = new Properties();
+		
+		File f = new File("shop.ini");
+		if(!f.exists() || f.isDirectory()) { 
+		    this.create();
+		}
 	}
 	
 	public void read() {
@@ -45,5 +52,16 @@ public class PropertiesFile {
 
 	public void set(String property, String value) {
 		this.properties.setProperty(property, value);
+	}
+	
+	public void create() {
+		try{
+		    PrintWriter writer = new PrintWriter("shop.ini", "UTF-8");
+		    writer.println("database=sql");
+		    writer.println("ui=swing");
+		    writer.close();
+		} catch (Exception e) {
+		   e.printStackTrace();
+		}
 	}
 }
