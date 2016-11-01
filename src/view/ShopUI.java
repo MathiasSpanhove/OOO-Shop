@@ -10,24 +10,20 @@ import javax.swing.*;
 import domain.Shop;
 import exception.DatabaseException;
 import exception.DomainException;
+import properties.PropertiesFile;
 
 @SuppressWarnings("serial")
 public class ShopUI extends JFrame {
 	private Shop shop;
 	private ProductUI productUI;
 	private CustomerUI customerUI;
+	private PropertiesFile properties;
 
-	public ShopUI() {
-		try {
-			shop = new Shop();
-		} catch (DatabaseException e) {
-			e.printStackTrace();
-		} catch (DomainException e) {
-			e.printStackTrace();
-		}
+	public ShopUI(PropertiesFile properties) throws DatabaseException, DomainException {
+		this.properties = properties;
+		this.shop = new Shop(properties.get("database"));
 		this.productUI = new ProductUI(shop, this);
 		this.customerUI = new CustomerUI(shop, this);
-
 	}
 
 	public void showMenuSwing() {
@@ -264,4 +260,7 @@ public class ShopUI extends JFrame {
 		shop.close();
 	}
 
+	public void showMenuError(String text) {
+		JOptionPane.showMessageDialog(null, text);
+	}
 }

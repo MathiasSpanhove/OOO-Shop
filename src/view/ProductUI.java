@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.HeadlessException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JOptionPane;
 
@@ -98,8 +97,7 @@ public class ProductUI {
 			JOptionPane.showMessageDialog(null, "Input not valid");
 			e.printStackTrace();
 		} catch (CancelledException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return;
 		}
 	}
 

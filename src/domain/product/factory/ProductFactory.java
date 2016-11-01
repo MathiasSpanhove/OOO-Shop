@@ -1,7 +1,6 @@
 package domain.product.factory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import domain.product.Product;
 import domain.product.enums.Products;
@@ -26,7 +25,7 @@ public class ProductFactory {
 			//Cast to product and return
 			Product product = (Product) productObject;
 			return product;
-		} catch (InvocationTargetException | IllegalArgumentException | SecurityException | NoSuchMethodException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DomainException("Could not create your product because of factory issue.\n" + e.getMessage());
 		}
