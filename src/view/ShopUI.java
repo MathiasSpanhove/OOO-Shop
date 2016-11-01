@@ -259,8 +259,4 @@ public class ShopUI extends JFrame {
 
 		shop.close();
 	}
-
-	public void showMenuError(String text) {
-		JOptionPane.showMessageDialog(null, text);
-	}
 }

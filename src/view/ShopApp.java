@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import properties.PropertiesFile;
 
 public class ShopApp {
@@ -25,9 +27,14 @@ public class ShopApp {
 						+ "\nPlease change your shop.ini settings to ui=swing or ui=joptionpane");
 			}
 		} catch (Exception e) {
-			shopUI.showMenuError("Could not initialize the shop\n" + e.getMessage());
+			showMenuError("Could not initialize the shop\n" + e.getMessage());
 		}
 
 		properties.write();
+	}
+	
+
+	public static void showMenuError(String text) {
+		JOptionPane.showMessageDialog(null, text);
 	}
 }
