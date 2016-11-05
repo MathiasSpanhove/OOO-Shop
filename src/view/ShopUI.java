@@ -32,7 +32,7 @@ public class ShopUI extends JFrame {
 		this.setLocationRelativeTo(null);
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3, 1, 5, 5));
+		panel.setLayout(new GridLayout(4, 1, 5, 5));
 		this.add(panel);
 		setContentPane(panel);
 
@@ -52,6 +52,8 @@ public class ShopUI extends JFrame {
 		JButton buttonIsSubscribed = new JButton("Is customer subscribed?");
 		JButton buttonSubscribe = new JButton("Subscribe customer");
 		JButton buttonUnsubscribe = new JButton("Unsubscribe customer");
+		
+		JButton buttonShowStatistics = new JButton("Show statistics");
 		
 		JPanel menu = new JPanel();
 		menu.setLayout(new GridLayout(3, 2, 5, 5));
@@ -83,6 +85,12 @@ public class ShopUI extends JFrame {
 		menu2.add(buttonRepairProduct);
 		menu2.add(buttonRemoveProduct);		
 
+		JPanel menu3 = new JPanel();
+		menu3.setLayout(new GridLayout(1, 1, 5, 5));
+		panel.add(menu3);
+		
+		menu3.add(buttonShowStatistics);
+		
 		revalidate();
 
 		// product
@@ -220,6 +228,17 @@ public class ShopUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				customerUI.unsubscribeCustomer();
+				setVisible(true);
+			}
+		});
+		
+		// statistics
+		
+		buttonShowStatistics.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				productUI.showStatistics();
 				setVisible(true);
 			}
 		});

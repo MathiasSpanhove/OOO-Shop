@@ -184,7 +184,7 @@ public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 		
 		this.open();
 
-		String sql = "UPDATE statistics SET(";
+		String sql = "UPDATE statistics SET ";
 		
 		for(Map.Entry<String, Integer> stat : statistic.getStats().entrySet()) {
 			sql += stat.getKey() + "=" + stat.getValue() + ",";
@@ -192,7 +192,7 @@ public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 		
 		sql = sql.substring(0, sql.length() - 1);
 		
-		sql += ") WHERE date='" + statistic.getDate() + "'";
+		sql += " WHERE date='" + statistic.getDate() + "'";
 		
 		try {
 			this.statement = this.connection.prepareStatement(sql);
@@ -273,7 +273,7 @@ public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 		String sql = "CREATE TABLE statistics (date VARCHAR(255) NOT NULL";
 		
 		for(Products p : Products.values()) {
-			sql += ", " + p.getName() + " int";
+			sql += ", " + p.getName() + " int DEFAULT 0";
 		}
 		
 		sql +=	", PRIMARY KEY ( date ))";

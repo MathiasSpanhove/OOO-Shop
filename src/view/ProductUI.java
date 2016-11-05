@@ -1,8 +1,14 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import domain.Shop;
 import domain.product.Product;
@@ -277,5 +283,22 @@ public class ProductUI {
 		} else {
 			return value;
 		}
+	}
+
+	public void showStatistics() {
+		try {
+			List<String> statisticsList = this.shop.getStatistics();
+			JList<String> listeee = new JList<String>(statisticsList.toArray(new String[0]));
+			
+			JScrollPane listScroller = new JScrollPane(listeee);
+			listScroller.setPreferredSize(new Dimension(250, 80));
+
+			
+			JOptionPane.showMessageDialog(null, listScroller);
+		} catch (DatabaseException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 }

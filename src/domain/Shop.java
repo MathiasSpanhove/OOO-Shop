@@ -202,7 +202,7 @@ public class Shop implements Observable {
 	}
 	
 	//Statistics
-	public String getStatistics() throws DatabaseException {
-		return this.statistics.statsToString();
+	public List<String> getStatistics() throws DatabaseException {
+		return this.statistics.statsToStringList();
 	}
 }

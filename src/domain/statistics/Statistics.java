@@ -1,7 +1,9 @@
 package domain.statistics;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import database.statistics.IStatisticsDatabase;
@@ -71,5 +73,22 @@ public class Statistics implements Observer {
 		}
 		
 		return output;
+	}
+	
+	public List<String> statsToStringList() throws DatabaseException {
+		List<String> list = new ArrayList<String>();
+
+		for(Statistic s : statisticsDb.getAllStatistics()) {
+			String output = s.getDate() + " -";
+			
+			for(Map.Entry<String, Integer> stat : s.getStats().entrySet()) {
+				output += " " + stat.getKey() + ": " + stat.getValue() + " |";
+			}
+			output = output.substring(0, output.length() - 1);
+			
+			list.add(output);
+		}
+		
+		return list;
 	}
 }
