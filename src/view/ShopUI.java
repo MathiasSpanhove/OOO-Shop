@@ -21,7 +21,7 @@ public class ShopUI extends JFrame {
 
 	public ShopUI(PropertiesFile properties) throws DatabaseException, DomainException {
 		this.properties = properties;
-		this.shop = new Shop(properties.get("database"));
+		this.shop = new Shop(properties);
 		this.productUI = new ProductUI(shop, this);
 		this.customerUI = new CustomerUI(shop, this);
 	}

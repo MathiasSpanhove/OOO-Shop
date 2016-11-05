@@ -13,6 +13,7 @@ import domain.product.Product;
 import domain.product.enums.Products;
 import domain.product.factory.ProductFactory;
 import exception.DatabaseException;
+import properties.PropertiesFile;
 
 public class ProductDatabaseText implements IProductDatabase {
 
@@ -26,7 +27,7 @@ public class ProductDatabaseText implements IProductDatabase {
 		open();
 	}
 	
-	public static ProductDatabaseText getInstance() {
+	public static ProductDatabaseText getInstance(PropertiesFile properties) {
 		if(uniqueInstance == null) {
 			synchronized (ProductDatabaseText.class) {
 				if(uniqueInstance == null) {

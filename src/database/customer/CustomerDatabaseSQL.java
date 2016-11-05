@@ -13,6 +13,7 @@ import domain.Shop;
 import domain.customer.Customer;
 import domain.customer.Observer;
 import exception.DatabaseException;
+import properties.PropertiesFile;
 
 public class CustomerDatabaseSQL implements ICustomerDatabase {
 
@@ -24,13 +25,13 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 	private Shop shop;
 	private volatile static CustomerDatabaseSQL uniqueInstance;
 
-	private CustomerDatabaseSQL(Shop shop) {
+	private CustomerDatabaseSQL(PropertiesFile properties, Shop shop) {
 		// properties voor verbinding maken
 		this.properties = new Properties();
-		this.properties.setProperty("user", "sql7139719");
-		this.properties.setProperty("password", "nT6fJKVEci");
-		this.properties.setProperty("ssl", "true");
-		this.properties.setProperty("sslfactory", "org.mysql.ssl.NonValidatingFactory");
+		this.properties.setProperty("user", properties.get("user"));
+		this.properties.setProperty("password", properties.get("password"));
+		this.properties.setProperty("ssl", properties.get("ssl"));
+		this.properties.setProperty("sslfactory", properties.get("sslfactory"));
 
 		// connectie maken met gegeven databank met opgegeven credentials
 		// beschreven in properties
@@ -43,11 +44,11 @@ public class CustomerDatabaseSQL implements ICustomerDatabase {
 		this.shop = shop;
 	}
 	
-	public static CustomerDatabaseSQL getInstance(Shop shop) {
+	public static CustomerDatabaseSQL getInstance(PropertiesFile properties, Shop shop) {
 		if(uniqueInstance == null) {
 			synchronized (CustomerDatabaseSQL.class) {
 				if(uniqueInstance == null) {
-					uniqueInstance = new CustomerDatabaseSQL(shop);
+					uniqueInstance = new CustomerDatabaseSQL(properties, shop);
 				}
 			}
 		}

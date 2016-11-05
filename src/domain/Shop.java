@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import database.customer.CustomerDatabaseSQL;
 import database.customer.CustomerDatabaseText;
@@ -24,6 +25,7 @@ import domain.product.factory.ProductFactory;
 import domain.statistics.Statistics;
 import exception.DatabaseException;
 import exception.DomainException;
+import properties.PropertiesFile;
 
 @SuppressWarnings("unused")
 public class Shop implements Observable {
@@ -33,20 +35,20 @@ public class Shop implements Observable {
 	private Map<Integer, Observer> observers;
 	private Statistics statistics;
 
-	public Shop(String dbType) throws DatabaseException, DomainException {
-		if (dbType.equals("tekst")) {
-			this.productDb = ProductDatabaseText.getInstance();
-			this.customerDb = CustomerDatabaseText.getInstance(this);
-		} else if (dbType.equals("sql")) {
-			this.productDb = ProductDatabaseSQL.getInstance();
-			this.customerDb = CustomerDatabaseSQL.getInstance(this);
+	public Shop(PropertiesFile properties) throws DatabaseException, DomainException {
+		if (properties.get("database").equals("text")) {
+			this.productDb = ProductDatabaseText.getInstance(properties);
+			this.customerDb = CustomerDatabaseText.getInstance(properties, this);
+		} else if (properties.get("database").equals("sql")) {
+			this.productDb = ProductDatabaseSQL.getInstance(properties);
+			this.customerDb = CustomerDatabaseSQL.getInstance(properties, this);
 		} else {
-			throw new DatabaseException("Invalid database property: " + dbType
+			throw new DatabaseException("Invalid database property: " + properties.get("database")
 					+ "\nPlease change your shop.ini settings to database=text or database=sql");
 		}
 
 		this.observers = customerDb.getSubscribers();
-		this.statistics = new Statistics(this);
+		this.statistics = new Statistics(properties, this);
 	}
 
 	public void close() {

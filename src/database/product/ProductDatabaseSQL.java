@@ -12,6 +12,7 @@ import domain.product.Product;
 import domain.product.enums.Products;
 import domain.product.factory.ProductFactory;
 import exception.DatabaseException;
+import properties.PropertiesFile;
 
 public class ProductDatabaseSQL implements IProductDatabase {
 
@@ -22,13 +23,13 @@ public class ProductDatabaseSQL implements IProductDatabase {
 	private static final String URL = "jdbc:mysql://sql7.freesqldatabase.com/sql7139719";
 	private volatile static ProductDatabaseSQL uniqueInstance;	
 	
-	private ProductDatabaseSQL() {
+	private ProductDatabaseSQL(PropertiesFile properties) {
 		// properties voor verbinding maken
 		this.properties = new Properties();
-		this.properties.setProperty("user", "sql7139719");
-		this.properties.setProperty("password", "nT6fJKVEci");
-		this.properties.setProperty("ssl", "true");
-		this.properties.setProperty("sslfactory", "org.mysql.ssl.NonValidatingFactory");
+		this.properties.setProperty("user", properties.get("user"));
+		this.properties.setProperty("password", properties.get("password"));
+		this.properties.setProperty("ssl", properties.get("ssl"));
+		this.properties.setProperty("sslfactory", properties.get("sslfactory"));
 
 		// connectie maken met gegeven databank met opgegeven credentials
 		// beschreven in properties
@@ -39,11 +40,11 @@ public class ProductDatabaseSQL implements IProductDatabase {
 		}
 	}
 	
-	public static ProductDatabaseSQL getInstance() {
+	public static ProductDatabaseSQL getInstance(PropertiesFile properties) {
 		if(uniqueInstance == null) {
 			synchronized (ProductDatabaseSQL.class) {
 				if(uniqueInstance == null) {
-					uniqueInstance = new ProductDatabaseSQL();
+					uniqueInstance = new ProductDatabaseSQL(properties);
 				}
 			}
 		}

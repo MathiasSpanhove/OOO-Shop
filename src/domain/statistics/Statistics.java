@@ -12,16 +12,17 @@ import domain.product.Product;
 import domain.product.enums.Products;
 import exception.DatabaseException;
 import exception.DomainException;
+import properties.PropertiesFile;
 
 public class Statistics implements Observer {
 
 	private IStatisticsDatabase statisticsDb;
 	private Shop shop;
 	
-	public Statistics(Shop shop) throws DatabaseException, DomainException {
+	public Statistics(PropertiesFile properties, Shop shop) throws DatabaseException, DomainException {
 		this.shop = shop;
 		shop.registerSubscriber(this);
-		this.statisticsDb = StatisticsDatabaseSQL.getInstance();
+		this.statisticsDb = StatisticsDatabaseSQL.getInstance(properties);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import java.util.Properties;
 import domain.product.enums.Products;
 import domain.statistics.Statistic;
 import exception.DatabaseException;
+import properties.PropertiesFile;
 
 public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 	
@@ -24,13 +25,13 @@ public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 	private static final String URL = "jdbc:mysql://sql7.freesqldatabase.com/sql7139719";
 	private volatile static StatisticsDatabaseSQL uniqueInstance;
 	
-	private StatisticsDatabaseSQL() {
+	private StatisticsDatabaseSQL(PropertiesFile properties) {
 		// properties voor verbinding maken
 		this.properties = new Properties();
-		this.properties.setProperty("user", "sql7139719");
-		this.properties.setProperty("password", "nT6fJKVEci");
-		this.properties.setProperty("ssl", "true");
-		this.properties.setProperty("sslfactory", "org.mysql.ssl.NonValidatingFactory");
+		this.properties.setProperty("user", properties.get("user"));
+		this.properties.setProperty("password", properties.get("password"));
+		this.properties.setProperty("ssl", properties.get("ssl"));
+		this.properties.setProperty("sslfactory", properties.get("sslfactory"));
 
 		// connectie maken met gegeven databank met opgegeven credentials
 		// beschreven in properties
@@ -41,11 +42,11 @@ public class StatisticsDatabaseSQL implements IStatisticsDatabase {
 		}
 	}
 	
-	public static StatisticsDatabaseSQL getInstance() {
+	public static StatisticsDatabaseSQL getInstance(PropertiesFile properties) {
 		if(uniqueInstance == null) {
 			synchronized (StatisticsDatabaseSQL.class) {
 				if(uniqueInstance == null) {
-					uniqueInstance = new StatisticsDatabaseSQL();
+					uniqueInstance = new StatisticsDatabaseSQL(properties);
 				}
 			}
 		}

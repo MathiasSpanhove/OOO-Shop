@@ -47,7 +47,7 @@ public class PropertiesFile {
 	}
 	
 	public String get(String property) {
-		return this.properties.getProperty(property).toLowerCase();
+		return this.properties.getProperty(property);
 	}
 
 	public void set(String property, String value) {
@@ -59,6 +59,10 @@ public class PropertiesFile {
 		    PrintWriter writer = new PrintWriter("shop.ini", "UTF-8");
 		    writer.println("database=sql");
 		    writer.println("ui=swing");
+		    writer.println("user=sql7139719");
+		    writer.println("password=nT6fJKVEci");
+		    writer.println("ssl=true");
+		    writer.println("sslfactory=org.mysql.ssl.NonValidatingFactory");
 		    writer.close();
 		} catch (Exception e) {
 		   e.printStackTrace();

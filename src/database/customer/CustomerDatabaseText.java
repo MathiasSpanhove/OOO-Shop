@@ -12,6 +12,7 @@ import domain.Shop;
 import domain.customer.Customer;
 import domain.customer.Observer;
 import exception.DatabaseException;
+import properties.PropertiesFile;
 
 public class CustomerDatabaseText implements ICustomerDatabase {
 
@@ -27,7 +28,7 @@ public class CustomerDatabaseText implements ICustomerDatabase {
 		open();
 	}
 	
-	public static CustomerDatabaseText getInstance(Shop shop) {
+	public static CustomerDatabaseText getInstance(PropertiesFile properties, Shop shop) {
 		if(uniqueInstance == null) {
 			synchronized (CustomerDatabaseText.class) {
 				if(uniqueInstance == null) {

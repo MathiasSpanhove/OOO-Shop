@@ -27,7 +27,7 @@ public class ShopApp {
 						+ "\nPlease change your shop.ini settings to ui=swing or ui=joptionpane");
 			}
 		} catch (Exception e) {
-			showMenuError("Could not initialize the shop\n" + e.getMessage());
+			showMenuError("Could not initialize the shop\n" + e.getMessage() + "\n" + e.getClass().getSimpleName());
 		}
 
 		properties.write();
