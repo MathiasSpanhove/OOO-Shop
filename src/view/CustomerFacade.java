@@ -9,59 +9,13 @@ import exception.CancelledException;
 import exception.DatabaseException;
 import exception.DomainException;
 
-public class CustomerUI {
+public class CustomerFacade {
 	Shop shop;
 	ShopUI shopUI;
 
-	public CustomerUI(Shop shop, ShopUI shopUI) {
+	public CustomerFacade(Shop shop, ShopUI shopUI) {
 		this.shop = shop;
 		this.shopUI = shopUI;
-	}
-
-	public void showMenu() {
-		int choice = -1;
-		String menu = "1. Add customer" + "\n2. Show customer" + "\n3. Show all customers"
-				+ "\n4. Is customer subscribed?" + "\n5. Subscribe customer" + "\n6. Unsubscribe customer"
-				+ "\n\n0. Back";
-
-		while (choice != 0) {
-			try {
-				String choiceString = JOptionPane.showInputDialog(menu);
-				if (choiceString == null) {
-					break;
-				} else {
-					choice = Integer.parseInt(choiceString);
-
-					switch (choice) {
-					case 0:
-						break;
-					case 1:
-						addCustomer();
-						break;
-					case 2:
-						showCustomer();
-						break;
-					case 3:
-						showAllCustomers();
-						break;
-					case 4:
-						isCustomerSubscribed();
-						break;
-					case 5:
-						subscribeCustomer();
-						break;
-					case 6:
-						unsubscribeCustomer();
-						break;
-					default:
-						JOptionPane.showMessageDialog(null, "Please enter a valid number");
-					}
-				}
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Please enter a number");
-				e.printStackTrace();
-			}
-		}
 	}
 
 	protected void addCustomer() {

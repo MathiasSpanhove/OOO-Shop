@@ -25,6 +25,7 @@ import domain.product.factory.ProductFactory;
 import domain.statistics.Statistics;
 import exception.DatabaseException;
 import exception.DomainException;
+import exception.StateException;
 import properties.PropertiesFile;
 
 @SuppressWarnings("unused")
@@ -77,12 +78,53 @@ public class Shop implements Observable {
 		notifySubscribers(newProduct);
 	}
 
-	public void updateProduct(Product p) throws DatabaseException {
+	public void updateProductInDB(Product p) throws DatabaseException {
 		productDb.updateProduct(p);
 	}
-
-	public void deleteProduct(int id) throws DatabaseException {
+	
+	public void removeProductInDB(int id) throws DatabaseException {
 		productDb.deleteProduct(id);
+	}
+	
+	public void borrowProduct(int id) throws StateException, DatabaseException {
+		// state
+		Product p = this.getProduct(id);
+		p.borrowProduct();
+		
+		// db
+		this.updateProductInDB(p);
+	}
+
+	public void returnProduct(int id, boolean damaged) throws StateException, DatabaseException {
+		// state
+		Product p = this.getProduct(id);
+		p.returnProduct(damaged);
+		
+		// db
+		this.updateProductInDB(p);
+	}
+	
+	public void repairProduct(int id) throws StateException, DatabaseException {
+		// state
+		Product p = this.getProduct(id);
+		p.repairProduct();
+		
+		// db
+		this.updateProductInDB(p);
+	}
+	
+	public void deleteProduct(int id) throws StateException, DatabaseException {
+		// state
+		Product p = this.getProduct(id);
+		p.deleteProduct();
+		
+		// db
+		this.removeProductInDB(id);
+	}
+	
+	public double getProductFine(int id) throws DatabaseException {
+		Product p = this.getProduct(id);
+		return this.calculateFine(p.getLastBorrowed());
 	}
 
 	public double calculateFine(LocalDate lastBorrowed) {

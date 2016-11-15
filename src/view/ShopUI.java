@@ -15,15 +15,15 @@ import properties.PropertiesFile;
 @SuppressWarnings("serial")
 public class ShopUI extends JFrame {
 	private Shop shop;
-	private ProductUI productUI;
-	private CustomerUI customerUI;
+	private ProductFacade productUI;
+	private CustomerFacade customerUI;
 	private PropertiesFile properties;
 
 	public ShopUI(PropertiesFile properties) throws DatabaseException, DomainException {
 		this.properties = properties;
 		this.shop = new Shop(properties);
-		this.productUI = new ProductUI(shop, this);
-		this.customerUI = new CustomerUI(shop, this);
+		this.productUI = new ProductFacade(shop, this);
+		this.customerUI = new CustomerFacade(shop, this);
 	}
 
 	public void showMenuSwing() {
@@ -260,10 +260,10 @@ public class ShopUI extends JFrame {
 					case 0:
 						break;
 					case 1:
-						this.productUI.showMenu();
+						this.showJOptionProductMenu();
 						break;
 					case 2:
-						this.customerUI.showMenu();
+						this.showJOptionCustomerMenu();
 						break;
 					default:
 						JOptionPane.showMessageDialog(null, "Please enter a valid number");
@@ -277,5 +277,106 @@ public class ShopUI extends JFrame {
 		}
 
 		shop.close();
+	}
+	
+	public void showJOptionCustomerMenu() {
+		int choice = -1;
+		String menu = "1. Add customer" + "\n2. Show customer" + "\n3. Show all customers"
+				+ "\n4. Is customer subscribed?" + "\n5. Subscribe customer" + "\n6. Unsubscribe customer"
+				+ "\n\n0. Back";
+
+		while (choice != 0) {
+			try {
+				String choiceString = JOptionPane.showInputDialog(menu);
+				if (choiceString == null) {
+					break;
+				} else {
+					choice = Integer.parseInt(choiceString);
+
+					switch (choice) {
+					case 0:
+						break;
+					case 1:
+						this.customerUI.addCustomer();
+						break;
+					case 2:
+						this.customerUI.showCustomer();
+						break;
+					case 3:
+						this.customerUI.showAllCustomers();
+						break;
+					case 4:
+						this.customerUI.isCustomerSubscribed();
+						break;
+					case 5:
+						this.customerUI.subscribeCustomer();
+						break;
+					case 6:
+						this.customerUI.unsubscribeCustomer();
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+					}
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Please enter a number");
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void showJOptionProductMenu() {
+		int choice = -1;
+		String menu = "1. Add product" + "\n2. Show product" + "\n3. Show rental price" + "\n4. Show all products"
+				+ "\n5. Check product state" + "\n6. Borrow product" + "\n7. Return product" + "\n8. Repair product"
+				+ "\n9. Remove product" + "\n\n0. Back";
+
+		while (choice != 0) {
+			try {
+				String choiceString = JOptionPane.showInputDialog(menu);
+				if (choiceString == null) {
+					break;
+				} else {
+					choice = Integer.parseInt(choiceString);
+
+					switch (choice) {
+					case 0:
+						break;
+					case 1:
+						this.productUI.addProduct();
+						break;
+					case 2:
+						this.productUI.showProduct();
+						break;
+					case 3:
+						this.productUI.showPrice();
+						break;
+					case 4:
+						this.productUI.showAllProducts();
+						break;
+					case 5:
+						this.productUI.showProductState();
+						break;
+					case 6:
+						this.productUI.borrowProduct();
+						break;
+					case 7:
+						this.productUI.returnProduct();
+						break;
+					case 8:
+						this.productUI.repairProduct();
+						break;
+					case 9:
+						this.productUI.deleteProduct();
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Please enter a valid number");
+					}
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Please enter a number");
+				e.printStackTrace();
+			}
+		}
 	}
 }
