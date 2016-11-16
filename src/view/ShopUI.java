@@ -15,15 +15,15 @@ import properties.PropertiesFile;
 @SuppressWarnings("serial")
 public class ShopUI extends JFrame {
 	private Shop shop;
-	private ProductFacade productUI;
-	private CustomerFacade customerUI;
+	private ProductUI productUI;
+	private CustomerUI customerUI;
 	private PropertiesFile properties;
 
 	public ShopUI(PropertiesFile properties) throws DatabaseException, DomainException {
 		this.properties = properties;
 		this.shop = new Shop(properties);
-		this.productUI = new ProductFacade(shop, this);
-		this.customerUI = new CustomerFacade(shop, this);
+		this.productUI = new ProductUI(shop, this);
+		this.customerUI = new CustomerUI(shop, this);
 	}
 
 	public void showMenuSwing() {

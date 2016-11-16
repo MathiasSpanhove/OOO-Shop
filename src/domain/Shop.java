@@ -66,7 +66,19 @@ public class Shop implements Observable {
 	public Product getProduct(int id) throws DatabaseException {
 		return productDb.getProduct(id);
 	}
-
+	
+	public String getProductTitle(int id) throws DatabaseException {
+		return this.getProduct(id).getTitle();
+	}
+	
+	public double getProductPrice(int id, int days) throws DatabaseException, DomainException {
+		return this.getProduct(id).getPrice(days);
+	}
+	
+	public String getProductState(int id) throws DatabaseException {
+		return this.getProduct(id).getCurrentState().toString();
+	}
+	
 	public List<Product> getProducts() throws DatabaseException {
 		return productDb.getAllProducts();
 	}
@@ -159,6 +171,18 @@ public class Shop implements Observable {
 	public Customer getCustomer(int id) throws DatabaseException {
 		return customerDb.getCustomer(id);
 	}
+	
+	public String getCustomerFullName(int id) throws DatabaseException {
+		return this.getCustomer(id).getFirstName() + " " + this.getCustomer(id).getLastName();
+	}
+	
+	public MailSubscription getCustomerMailSubscription(int id) throws DatabaseException {
+		return this.getCustomer(id).getMailSubscription();
+	}
+	
+	public boolean isCustomerSubscribed(int id) throws DatabaseException {
+		return this.getCustomer(id).getMailSubscription().isSubscribed();
+	}
 
 	public List<Customer> getCustomers() throws DatabaseException {
 		return customerDb.getAllCustomers();
@@ -181,7 +205,15 @@ public class Shop implements Observable {
 	public void deleteCustomer(int id) throws DatabaseException {
 		customerDb.deleteCustomer(id);
 	}
-
+	
+	public void registerCustomerAsSubscriber(int id) throws DatabaseException, DomainException {
+		this.registerSubscriber(this.getCustomerMailSubscription(id));
+	}
+	
+	public void removeCustomerAsSubscriber(int id) throws DatabaseException, DomainException {
+		this.removeSubscriber(this.getCustomerMailSubscription(id));
+	}
+	
 	public String customersToString() throws DatabaseException {
 		if (customerDb.getAllCustomers().isEmpty()) {
 			return "There are no customers";

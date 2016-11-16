@@ -15,11 +15,11 @@ import exception.DatabaseException;
 import exception.DomainException;
 import exception.StateException;
 
-public class ProductFacade {
+public class ProductUI {
 	Shop shop;
 	ShopUI shopUI;
 
-	public ProductFacade(Shop shop, ShopUI shopUI) {
+	public ProductUI(Shop shop, ShopUI shopUI) {
 		this.shop = shop;
 		this.shopUI = shopUI;
 	}
@@ -52,7 +52,7 @@ public class ProductFacade {
 	protected void showProduct() {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Product"));
-			JOptionPane.showMessageDialog(null, shop.getProduct(id).getTitle());
+			JOptionPane.showMessageDialog(null, shop.getProductTitle(id));
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -68,7 +68,7 @@ public class ProductFacade {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Price"));
 			int days = Integer.parseInt(showJOptionInputDialog("Enter number of days:", "Show Price"));
-			JOptionPane.showMessageDialog(null, shop.getProduct(id).getPrice(days));
+			JOptionPane.showMessageDialog(null, shop.getProductPrice(id, days));
 		} catch (DomainException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class ProductFacade {
 	protected void showProductState() {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Product State"));
-			JOptionPane.showMessageDialog(null, "This product is " + shop.getProduct(id).getCurrentState().toString());
+			JOptionPane.showMessageDialog(null, "This product is " + shop.getProductState(id));
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();

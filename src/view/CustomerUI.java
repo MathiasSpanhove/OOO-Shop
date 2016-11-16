@@ -9,11 +9,11 @@ import exception.CancelledException;
 import exception.DatabaseException;
 import exception.DomainException;
 
-public class CustomerFacade {
+public class CustomerUI {
 	Shop shop;
 	ShopUI shopUI;
 
-	public CustomerFacade(Shop shop, ShopUI shopUI) {
+	public CustomerUI(Shop shop, ShopUI shopUI) {
 		this.shop = shop;
 		this.shopUI = shopUI;
 	}
@@ -48,8 +48,7 @@ public class CustomerFacade {
 	protected void showCustomer() {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Show Customer"));
-			JOptionPane.showMessageDialog(null,
-					shop.getCustomer(id).getFirstName() + " " + shop.getCustomer(id).getLastName());
+			JOptionPane.showMessageDialog(null, shop.getCustomerFullName(id));
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -76,8 +75,8 @@ public class CustomerFacade {
 	protected void isCustomerSubscribed() {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Is Customer Subscribed?"));
-			JOptionPane.showMessageDialog(null, shop.getCustomer(id).getMailSubscription().isSubscribed()
-					? "Customer is subscribed" : "Customer isn't subscribed");
+			JOptionPane.showMessageDialog(null,
+					shop.isCustomerSubscribed(id) ? "Customer is subscribed" : "Customer isn't subscribed");
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -89,7 +88,7 @@ public class CustomerFacade {
 	protected void subscribeCustomer() {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Subscribe Customer"));
-			shop.registerSubscriber(shop.getCustomer(id).getMailSubscription());
+			shop.registerCustomerAsSubscriber(id);
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
@@ -104,7 +103,7 @@ public class CustomerFacade {
 	protected void unsubscribeCustomer() {
 		try {
 			int id = Integer.parseInt(showJOptionInputDialog("Enter the id:", "Unsubscribe Customer"));
-			shop.removeSubscriber(shop.getCustomer(id).getMailSubscription());
+			shop.removeCustomerAsSubscriber(id);
 		} catch (DatabaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
